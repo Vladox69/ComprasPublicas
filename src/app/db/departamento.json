@@ -1,0 +1,72 @@
+[
+    {
+      "id": "DMEOR1",
+      "descripcion": "PRESIDENCIA EJECUTIVA",
+      "codigo": "MDMPE77"
+    },
+    {
+      "id": "DMEOR9",
+      "descripcion": "DPTO. DISEÑO Y CONSTRUCCION",
+      "codigo": "MDMPE20"
+    },
+    {
+      "id": "DMEOR7",
+      "descripcion": "DPTO.COMERCIAL",
+      "codigo": "MDMPE265"
+    },
+    {
+      "id": "DMEOR4",
+      "descripcion": "DEPARTAMENTO DE PLANIFICACION",
+      "codigo": "MDMPE438"
+    },
+    {
+      "id": "DMEOR2",
+      "descripcion": "UNIDAD DE AUDITORIA INTERNA",
+      "codigo": null
+    },
+    {
+      "id": "DMEOR6",
+      "descripcion": "DEPARTAMENTO FINANCIERO",
+      "codigo": "MDMPE310"
+    },
+    {
+      "id": "DMEOR8",
+      "descripcion": "DPTO. OPERACION Y MANTENIMIENTO",
+      "codigo": "MDMPE244"
+    },
+    {
+      "id": "DMEOR5",
+      "descripcion": "DPTO. DE RELACIONES INDUSTRIALES",
+      "codigo": "MDMPE443"
+    },
+    {
+      "id": "DMEOR10",
+      "descripcion": "DZO PASTAZA",
+      "codigo": "MDMPE259"
+    },
+    {
+      "id": "DMEOR11",
+      "descripcion": "DZO NAPO",
+      "codigo": "MDMPE690"
+    },
+    {
+      "id": "11",
+      "descripcion": "AJ",
+      "codigo": "MDMPE341"
+    },
+    {
+      "id": "12",
+      "descripcion": "CNEL BOLIVAR",
+      "codigo": "MDMPE259"
+    },
+    {
+      "id": "DMEOR163",
+      "descripcion": "DEPARTAMENTO DE SUBTRANSMISION",
+      "codigo": "MDMPE226"
+    },
+    {
+      "id": "DMEOR162",
+      "descripcion": "DEPARTAMENTO DE DISTRIBUCION",
+      "codigo": "MDMPE326"
+    }
+  ]

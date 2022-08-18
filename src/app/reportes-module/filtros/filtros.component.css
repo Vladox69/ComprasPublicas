@@ -1,0 +1,14 @@
+.formulario-filtros{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 20px;
+}
+
+.select-proceso{
+    width: 525px;
+}
+.select-departamento{
+    width: 300px;
+}

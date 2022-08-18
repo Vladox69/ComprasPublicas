@@ -1,0 +1,27 @@
+<div class="m-0 row justify-content-center">
+    <div class="col-auto p-5 text-center">
+        <mat-card class="date-card">
+            <mat-card-title class="text-center">Proceso de compras</mat-card-title>
+            <mat-card-subtitle class="text-center mt-1">Filtro por fechas</mat-card-subtitle>
+            <form action="" [formGroup]="dateForm">
+                <div class="d-flex justify-content-between">
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="fromDate" placeholder="Fecha inicial"
+                            formControlName="fromDate" />
+                        <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                        <mat-datepicker touchUi #fromDate></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="toDate" placeholder="Fecha final" formControlName="toDate" />
+                        <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                        <mat-datepicker touchUi #toDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <button [disabled]="!dateForm.valid" routerLink='/reportes/datos' mat-raised-button color="primary">Obtener resultados</button>
+                <div class="m-2">
+                    <span *ngIf="!dateForm.valid">La fecha de inicio debe ser mayor a la fecha final</span>
+                </div>
+            </form>
+        </mat-card>
+    </div>
+</div>

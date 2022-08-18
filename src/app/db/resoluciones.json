@@ -1,0 +1,23 @@
+
+[
+    {
+      "id": 1,
+      "detalle": "DESIERTO"
+    },
+    {
+      "id": 2,
+      "detalle": "ADJUDICADO"
+    },
+    {
+      "id": 3,
+      "detalle": "CANCELADO"
+    },
+    {
+      "id": 4,
+      "detalle": "BORRADOR"
+    },
+    {
+      "id": 5,
+      "detalle": "NO UTILIZADO"
+    }
+  ]

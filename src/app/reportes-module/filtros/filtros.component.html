@@ -1,0 +1,21 @@
+<div class="d-flex align-items-center">
+    <form class="formulario-filtros" action="">
+        <mat-form-field class="select-proceso" appearance="fill">
+            <mat-label>Tipo de proceso</mat-label>
+            <mat-select>
+                <mat-option>TODOS</mat-option>
+                <mat-option *ngFor="let tipoProceso of tipoProcesos" [value]=tipoProceso.abreviatura>
+                    {{tipoProceso.descripcion}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="select-departamento" appearance="fill">
+            <mat-label>Departamentos</mat-label>
+            <mat-select>
+                <mat-option>TODOS</mat-option>
+                <mat-option *ngFor="let departamento of departamentos" [value]=departamento.descripcion>
+                    {{departamento.descripcion}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
+</div>

@@ -1,0 +1,88 @@
+<table mat-table [dataSource]="comprasPublicas" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="INTRP_FECHA_PUBLICACION">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          FECHA DE RESOLUCION
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.createdAt }}
+        </td>
+        <td class="td-valorContratado" mat-footer-cell *matFooterCellDef>
+          Valor Total Contratado: {{total_contratado}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="INTPRO_DESCRIPCION">
+        <th mat-header-cell *matHeaderCellDef>PROCESO DESCRIPCION</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.intpro_DESCRIPCION }}
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+
+      <ng-container matColumnDef="INTPRO_ABREV">
+        <th mat-header-cell *matHeaderCellDef>PROCESO</th>
+        <td mat-cell *matCellDef="let element">{{ element.intpro_ABREV }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="INTRP_NUMEROPROCESO">
+        <th mat-header-cell *matHeaderCellDef>NUMERO PROCESO</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.intrp_NUMEROPROCESO }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="INTRP_CODIGOPROCESO">
+        <th mat-header-cell *matHeaderCellDef>CODIGO PROCESO</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.intrp_CODIGOPROCESO }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="INTRP_DETALLE">
+        <th mat-header-cell *matHeaderCellDef>DETALLE</th>
+        <td mat-cell *matCellDef="let element">{{ element.intrp_DETALLE }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="INTRES_DETALLE">
+        <th mat-header-cell *matHeaderCellDef>RESOLUCION</th>
+        <td mat-cell *matCellDef="let element">{{ element.intres_DETALLE }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="INTRP_NUMOFICIO">
+        <th mat-header-cell *matHeaderCellDef>OFICIO</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.intrp_NUMOFICIO }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="MA_CONT_RAZON_SOCIAL">
+        <th mat-header-cell *matHeaderCellDef>CONTRATISTA</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.ma_CONT_RAZON_SOCIAL }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="INTDEP_DESCRIPCION">
+        <th mat-header-cell *matHeaderCellDef>DEPARTAMENTO</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.intdep_DESCRIPCION }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="CONTRAF_NUMERO_CONTRATO">
+        <th mat-header-cell *matHeaderCellDef>AÑO</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.intrp_ANIO }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="CONTRAF_VALOR_CONTRATO">
+        <th mat-header-cell *matHeaderCellDef>VALOR CONTRATADO</th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.contraf_VALOR_CONTRATO">$</span> {{ element.contraf_VALOR_CONTRATO }}
+        </td>
+      </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
