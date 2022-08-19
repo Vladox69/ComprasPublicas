@@ -17,7 +17,11 @@
                         <mat-datepicker touchUi #toDate></mat-datepicker>
                     </mat-form-field>
                 </div>
-                <button [disabled]="!dateForm.valid" routerLink='/reportes/datos' mat-raised-button color="primary">Obtener resultados</button>
+                <button type="submit" [disabled]="!dateForm.valid" 
+                    (click)="onClickObtenerResultados()"
+                    mat-raised-button color="primary" >
+                    Obtener resultados
+                </button>
                 <div class="m-2">
                     <span *ngIf="!dateForm.valid">La fecha de inicio debe ser mayor a la fecha final</span>
                 </div>
@@ -25,3 +29,5 @@
         </mat-card>
     </div>
 </div>
+<app-graficos-vacio *ngIf="showEmpityComponentGraficos"></app-graficos-vacio>
+<app-reportes-vacios *ngIf="showEmpityComponentReportes"></app-reportes-vacios>

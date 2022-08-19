@@ -11,10 +11,11 @@ import {HttpClientModule} from '@angular/common/http';
 import { DateFormComponent } from './components/date-form/date-form.component';
 import { ReportesComponent } from './reportes-module/reportes/reportes.component';
 import { GraficosComponent } from './graficos-module/graficos/graficos.component';
-import { FiltrosComponent } from './reportes-module/filtros/filtros.component';
-import { BotonesComponent } from './reportes-module/botones/botones.component';
-import { TablaComponent } from './reportes-module/tabla/tabla.component';
+import { FiltrosComponent } from './components/filtros/filtros.component';
 import { VacioComponent } from './components/vacio/vacio.component';
+import { GraficosVacioComponent } from './graficos-module/graficos-vacio/graficos-vacio.component';
+import { ReportesVaciosComponent } from './reportes-module/reportes-vacios/reportes-vacios.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,16 +25,18 @@ import { VacioComponent } from './components/vacio/vacio.component';
     ReportesComponent,
     GraficosComponent,
     FiltrosComponent,
-    BotonesComponent,
-    TablaComponent,
-    VacioComponent
+    VacioComponent,
+    GraficosVacioComponent,
+    ReportesVaciosComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

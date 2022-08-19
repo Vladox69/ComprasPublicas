@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import { CompraPublica } from 'src/app/models/compras-publicas.interface';
 import { Departamento } from 'src/app/models/departamento.interface';
 import { TipoProceso } from 'src/app/models/tipo-proceso.interface';
 import { ComprasPublicasService } from 'src/app/services/compras-publicas.service';
 import { DepartamentosService } from 'src/app/services/departamentos.service';
 import { TipoProcesosService } from 'src/app/services/tipo-procesos.service';
-
+import { ImagePosition, Workbook } from 'exceljs';
+import * as fs from 'file-saver';
+import { LOGO } from 'src/app/services/logo';
+import { ExcelService } from 'src/app/services/excel.service';
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.component.html',
@@ -15,7 +19,26 @@ export class ReportesComponent implements OnInit {
   
   departamentos: Departamento[] = [];
   tipoProcesos: TipoProceso[] = [];
+  
   comprasPublicas: CompraPublica[] = [];
+  comprasPublicasFilter:CompraPublica[]=[];
+  comprasPublicasConteo:CompraPublica[]=[]
+
+  totalDesiertos:number=0;
+  totalAdjudicados:number=0;
+  totalCancelados:number=0;
+  totalBorradores:number=0;
+  totalNoUtilizados:number=0;
+
+  totalContratado:number=0;
+
+  selectProceso:string;
+  selectDepartamento:string;
+
+  fromDate:any;
+  toDate:any;
+  
+  private _workbook:Workbook;
 
   displayedColumns: string[] = [
     'INTRP_FECHA_PUBLICACION',
@@ -35,8 +58,13 @@ export class ReportesComponent implements OnInit {
   constructor(
     private departamentoService: DepartamentosService,
     private tipoProcesoServices: TipoProcesosService,
-    private comprasPublicasService: ComprasPublicasService
-  ) {}
+    private comprasPublicasService: ComprasPublicasService,
+    private activedRoute:ActivatedRoute,
+    private excelService:ExcelService
+  ) {
+    this.fromDate=this.activedRoute.snapshot.params.fromDate;
+    this.toDate=this.activedRoute.snapshot.params.toDate
+  }
 
   ngOnInit(): void {
     this.getDatos()
@@ -44,20 +72,124 @@ export class ReportesComponent implements OnInit {
 
   getDatos() {
     this.departamentoService.getDepartamentos().subscribe((response) => {
-      console.log(response);
       this.departamentos = response;
     });
     this.tipoProcesoServices.getTipoProcesos().subscribe((response) => {
-      console.log(response);
       this.tipoProcesos = response;
     });
     this.comprasPublicasService
-    .getComprasPublicasByDate('2022-06-01', '2022-08-18')
+    .getComprasPublicasByDate(this.fromDate, this.toDate)
     .subscribe((response) => {
       this.comprasPublicas = response;
+      this.comprasPublicasFilter=response;
+      this.filtrar();
     });
   }
 
 
+
+  filtrar(): void {
+    if (
+      this.selectProceso == undefined &&
+      this.selectDepartamento == undefined
+    ) {
+      this.comprasPublicas = this.comprasPublicasFilter;
+    } else if (
+      this.selectProceso == undefined &&
+      this.selectDepartamento != ''
+    ) {
+      let departamento = this.selectDepartamento;
+      this.comprasPublicas = this.comprasPublicasFilter.filter(function (proceso) {
+        return proceso.intdep_DESCRIPCION == departamento;
+      });
+      
+    } else if (
+      this.selectProceso != '' &&
+      this.selectDepartamento == undefined
+    ) {
+      let proceso_cod = this.selectProceso;
+      this.comprasPublicas = this.comprasPublicasFilter.filter(function (proceso) {
+        return proceso.intpro_ABREV == proceso_cod;
+      });
+      
+    } else if (this.selectProceso != '' && this.selectDepartamento != '') {
+      let departamento = this.selectDepartamento;
+      let proceso_cod = this.selectProceso;
+      this.comprasPublicas = this.comprasPublicasFilter.filter(function (proceso) {
+        return (
+          proceso.intdep_DESCRIPCION == departamento &&
+          proceso.intpro_ABREV == proceso_cod
+        );
+      });
+    }
+    this.totalAdjudicados = this.conteo_adjudicados(this.comprasPublicas);
+    this.totalCancelados = this.conteo_cancelados(this.comprasPublicas);
+    this.totalDesiertos = this.conteo_desiertos(this.comprasPublicas);
+    this.totalBorradores = this.conteo_borradores(this.comprasPublicas);
+    this.totalNoUtilizados = this.conteo_no_utilizados(this.comprasPublicas);
+    this.totalContratado = this.calculo_total_contratado(this.comprasPublicas);
+
+  }
+
+  conteo_adjudicados(procesoConteo: CompraPublica[]): number {
+    procesoConteo = procesoConteo.filter(function (proceso) {
+      return proceso.intres_DETALLE == 'ADJUDICADO';
+    });
+    return procesoConteo.length;
+  }
+
+  conteo_desiertos(procesoConteo: CompraPublica[]): number {
+    procesoConteo = procesoConteo.filter(function (proceso) {
+      return proceso.intres_DETALLE == 'DESIERTO';
+    });
+    return procesoConteo.length;
+  }
+
+  conteo_cancelados(procesoConteo: CompraPublica[]): number {
+    procesoConteo = procesoConteo.filter(function (proceso) {
+      return proceso.intres_DETALLE == 'CANCELADO';
+    });
+    return procesoConteo.length;
+  }
+
+  conteo_borradores(procesoConteo: CompraPublica[]): number {
+    procesoConteo = procesoConteo.filter(function (proceso) {
+      return proceso.intres_DETALLE == 'BORRADOR';
+    });
+    return procesoConteo.length;
+  }
+
+  conteo_no_utilizados(procesoConteo: CompraPublica[]): number {
+    procesoConteo = procesoConteo.filter(function (proceso) {
+      return proceso.intres_DETALLE == 'NO UTILIZADO';
+    });
+    return procesoConteo.length;
+  }
+
+  calculo_total_contratado(procesos_total_contratado: CompraPublica[]): number {
+    this.totalContratado = 0;
+    let acumulador = 0;
+    for (let i = 0; i < procesos_total_contratado.length; i++) {
+      acumulador =
+        acumulador + procesos_total_contratado[i].contraf_VALOR_CONTRATO;
+    }
+    return acumulador;
+  }
+
+  //Descargar excel
+  async dowloadExcel(){
+    
+    const details_val=[
+      this.totalAdjudicados,
+      this.totalDesiertos,
+      this.totalNoUtilizados,
+      this.totalCancelados,
+      this.totalBorradores,
+      this.totalContratado
+    ]   
+    
+    this.excelService.dowloadExcel(details_val,this.comprasPublicas);
+
+  }
 
 }
