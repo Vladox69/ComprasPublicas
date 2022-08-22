@@ -127,7 +127,7 @@ export class ReportesComponent implements OnInit {
     this.totalDesiertos = this.conteo_desiertos(this.comprasPublicas);
     this.totalBorradores = this.conteo_borradores(this.comprasPublicas);
     this.totalNoUtilizados = this.conteo_no_utilizados(this.comprasPublicas);
-    this.totalContratado = this.calculo_total_contratado(this.comprasPublicas);
+    this.totalContratado = parseFloat(this.calculo_total_contratado(this.comprasPublicas).toFixed(2));
     this.crearDetalleCompras();
 
   }
