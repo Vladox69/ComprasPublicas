@@ -6,10 +6,10 @@ import { TipoProceso } from 'src/app/models/tipo-proceso.interface';
 import { ComprasPublicasService } from 'src/app/services/compras-publicas.service';
 import { DepartamentosService } from 'src/app/services/departamentos.service';
 import { TipoProcesosService } from 'src/app/services/tipo-procesos.service';
-import { ImagePosition, Workbook } from 'exceljs';
-import * as fs from 'file-saver';
-import { LOGO } from 'src/app/services/logo';
 import { ExcelService } from 'src/app/services/excel.service';
+import { PdfService } from 'src/app/services/pdf.service';
+import { DetalleCompra } from 'src/app/models/detalle-compra.interface';
+
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.component.html',
@@ -22,7 +22,8 @@ export class ReportesComponent implements OnInit {
   
   comprasPublicas: CompraPublica[] = [];
   comprasPublicasFilter:CompraPublica[]=[];
-  comprasPublicasConteo:CompraPublica[]=[]
+  comprasPublicasConteo:CompraPublica[]=[];
+  detalleCompras:DetalleCompra[]=[];
 
   totalDesiertos:number=0;
   totalAdjudicados:number=0;
@@ -37,8 +38,6 @@ export class ReportesComponent implements OnInit {
 
   fromDate:any;
   toDate:any;
-  
-  private _workbook:Workbook;
 
   displayedColumns: string[] = [
     'INTRP_FECHA_PUBLICACION',
@@ -60,7 +59,8 @@ export class ReportesComponent implements OnInit {
     private tipoProcesoServices: TipoProcesosService,
     private comprasPublicasService: ComprasPublicasService,
     private activedRoute:ActivatedRoute,
-    private excelService:ExcelService
+    private excelService:ExcelService,
+    private pdfService:PdfService
   ) {
     this.fromDate=this.activedRoute.snapshot.params.fromDate;
     this.toDate=this.activedRoute.snapshot.params.toDate
@@ -128,6 +128,7 @@ export class ReportesComponent implements OnInit {
     this.totalBorradores = this.conteo_borradores(this.comprasPublicas);
     this.totalNoUtilizados = this.conteo_no_utilizados(this.comprasPublicas);
     this.totalContratado = this.calculo_total_contratado(this.comprasPublicas);
+    this.crearDetalleCompras();
 
   }
 
@@ -177,7 +178,7 @@ export class ReportesComponent implements OnInit {
   }
 
   //Descargar excel
-  async dowloadExcel(){
+  async downloadExcel(){
     
     const details_val=[
       this.totalAdjudicados,
@@ -190,6 +191,22 @@ export class ReportesComponent implements OnInit {
     
     this.excelService.dowloadExcel(details_val,this.comprasPublicas);
 
+  }
+
+  //Descargar pdf
+  downloadPdf(){
+    this.pdfService.exportToPdf('tableExporter','detalleExporter');
+  }
+
+  //Detalle de las compras
+  crearDetalleCompras(){
+    this.detalleCompras=[];
+    this.detalleCompras.push(new DetalleCompra("Adjudicados",this.totalAdjudicados));
+    this.detalleCompras.push(new DetalleCompra("Desiertos",this.totalDesiertos));
+    this.detalleCompras.push(new DetalleCompra("Cancelados",this.totalCancelados));
+    this.detalleCompras.push(new DetalleCompra("No utilizados",this.totalNoUtilizados));
+    this.detalleCompras.push(new DetalleCompra("Borradores",this.totalBorradores));
+    this.detalleCompras.push(new DetalleCompra("Total contratado",this.totalContratado));
   }
 
 }

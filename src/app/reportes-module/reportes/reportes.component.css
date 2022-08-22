@@ -38,6 +38,11 @@ table {
     margin-bottom: 20px;
 }
 
+.card-detail{
+    width: 350px;
+    height: 250px;
+}
+
 /*
 .example-container {
     height: 400px;

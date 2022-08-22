@@ -1,11 +1,11 @@
 <div class="container reportes-componentes">
     <!--Botones -->
     <div class="botones">
-        <button (click)="dowloadExcel()" class="btn-height btn-excel" mat-raised-button>
+        <button (click)="downloadExcel()" class="btn-height btn-excel" mat-raised-button>
             <mat-icon>description</mat-icon>
             Excel
         </button>
-        <button class="btn-height" mat-raised-button color="warn">
+        <button (click)="downloadPdf()" class="btn-height" mat-raised-button color="warn">
             <mat-icon>picture_as_pdf</mat-icon>
             PDF
         </button>
@@ -38,7 +38,7 @@
 <!--Tabla -->
 <div class="example-container mat-elevation-z8 m-12">
     <div class="table-container">
-        <table mat-table [dataSource]="comprasPublicas">
+        <table mat-table [dataSource]="comprasPublicas" id="tableExporter">
             <!--FECHA DE RESOLUCION -->
             <ng-container matColumnDef="INTRP_FECHA_PUBLICACION">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -129,3 +129,13 @@
         </table>
     </div>
 </div>
+<mat-card class="card-detail mat-elevation-z8 m-12" id="detalleExporter">
+    <mat-card-title>Detalle de las compras</mat-card-title>
+    <hr>
+    <mat-card-content>
+        <div class="detalle-compra" *ngFor="let detalle of detalleCompras">
+            <p>{{detalle.detalle}}:{{detalle.cantidad}}</p>
+        </div>
+        
+    </mat-card-content>
+</mat-card>
