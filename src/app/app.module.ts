@@ -7,6 +7,7 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import {HttpClientModule} from '@angular/common/http';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 import { DateFormComponent } from './components/date-form/date-form.component';
 import { ReportesComponent } from './reportes-module/reportes/reportes.component';
@@ -36,7 +37,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MaterialModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgApexchartsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
