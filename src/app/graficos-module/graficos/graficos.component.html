@@ -1,18 +1,34 @@
-<div class="shadow p-3 mb-5 bg-white rounded" id="chart">
-  <h2 class="text-center">Gráfica de barras</h2>
-  <apx-chart
-    [series]="chartOptions.series"
-    [chart]="chartOptions.chart"
-    [dataLabels]="chartOptions.dataLabels"
-    [plotOptions]="chartOptions.plotOptions"
-    [yaxis]="chartOptions.yaxis"
-    [xaxis]="chartOptions.xaxis"
-    [legend]="chartOptions.legend"
-    [colors]="chartOptions.colors"
-    [grid]="chartOptions.grid"
-  ></apx-chart>
+<div class="grid-graficos">
+  <div class=" shadow p-3 m-3 bg-white rounded" id="chart">
+    <h2 class="text-center">Gráfica de barras</h2>
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [dataLabels]="chartOptions.dataLabels"
+      [plotOptions]="chartOptions.plotOptions"
+      [yaxis]="chartOptions.yaxis"
+      [xaxis]="chartOptions.xaxis"
+      [legend]="chartOptions.legend"
+      [colors]="chartOptions.colors"
+      [grid]="chartOptions.grid"
+    ></apx-chart>
+  </div>
+  <div >
+    <mat-accordion class=" p-3 m-3">
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Procesos </mat-panel-title>
+          <mat-panel-description>
+            Descripción de los procesos
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div  *ngFor="let tipoProceso of tipoProcesosVista">
+          <p >{{tipoProceso.abreviatura}}  <span class="text-secondary">{{tipoProceso.descripcion}}</span> </p>
+      </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
 </div>
-
 <div class="d-flex justify-content-around">
   <div class="shadow p-3 mb-5 bg-white rounded" id="chartPie">
     <h2 class="text-center">Gráfica de pastel</h2>
