@@ -9,6 +9,9 @@ import {
   ApexYAxis,
   ApexLegend,
   ApexGrid,
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ApexTitleSubtitle
 } from 'ng-apexcharts';
 import { CompraPublica } from 'src/app/models/compras-publicas.interface';
 import { DetalleGrafico } from 'src/app/models/detalle-graficos.interface';
@@ -38,14 +41,36 @@ export type ChartOptions = {
   colors: string[];
   legend: ApexLegend;
 };
+
+export type ChartOptionsPie = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+};
+
+export type ChartOptionsRadar = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  title: ApexTitleSubtitle;
+  xaxis: ApexXAxis;
+};
+
 @Component({
   selector: 'app-graficos',
   templateUrl: './graficos.component.html',
   styleUrls: ['./graficos.component.css'],
 })
 export class GraficosComponent implements OnInit {
+
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
+
+  @ViewChild('chartPie') chartPie: ChartComponent;
+  public chartOptionsPie: Partial<ChartOptionsPie>;
+
+  @ViewChild("chartRadar") chartRadar: ChartComponent;
+  public chartOptionsRadar: Partial<ChartOptionsRadar>;
 
   tipoProcesos: TipoProceso[] = [];
   tipoProcesosVista: TipoProceso[] = [];
@@ -56,9 +81,9 @@ export class GraficosComponent implements OnInit {
   fromDate: any;
   toDate: any;
 
-  datos: number[] = [];
-  categories: string[] = [];
-  colors: string[] = [];
+  datos: number[] = [0];
+  categories: string[] = ['#008FFB'];
+  colors: string[] = ['#008FFB'];
 
   constructor(
     private tipoProcesoService: TipoProcesosService,
@@ -67,27 +92,24 @@ export class GraficosComponent implements OnInit {
   ) {
     this.fromDate = this.activedRoute.snapshot.params.fromDate;
     this.toDate = this.activedRoute.snapshot.params.toDate;
-
+    this.crearGrafico();
     this.getDatos();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-   getDatos() {
+  getDatos() {
     this.tipoProcesoService.getTipoProcesos().subscribe((response) => {
       this.tipoProcesos = response;
     });
 
     this.comprasPublicasService
       .getComprasPublicasByDate(this.fromDate, this.toDate)
-      .subscribe( (response) => {
+      .subscribe((response) => {
         this.comprasPublicas = response;
         this.obtenerProcesos();
         this.dividirCaracteristicas();
-        this.crearGrafico();
       });
-
-     
   }
 
   obtenerProcesos() {
@@ -101,30 +123,32 @@ export class GraficosComponent implements OnInit {
 
       if (auxComprasPublicas.length > 0) {
         this.detalleGraficos.push(
-          new DetalleGrafico(abreviatura, auxComprasPublicas.length, '#008FFB')
+          new DetalleGrafico(abreviatura, auxComprasPublicas.length, this.crearColorAleatorio())
         );
-        this.comprasPublicasVista = this.comprasPublicasVista.concat(auxComprasPublicas);
+        this.comprasPublicasVista =
+          this.comprasPublicasVista.concat(auxComprasPublicas);
         this.tipoProcesosVista.push(this.tipoProcesos[i]);
       }
     }
-    //console.log(this.comprasPublicasVista);
-    //console.log(this.tipoProcesosVista);
-    //console.log(this.detalleGraficos);
   }
 
   dividirCaracteristicas() {
+    this.datos = [];
+    this.categories = [];
+    this.colors = [];
     for (let i = 0; i < this.detalleGraficos.length; i++) {
       this.datos.push(this.detalleGraficos[i].cantidad);
       this.categories.push(this.detalleGraficos[i].detalle);
       this.colors.push(this.detalleGraficos[i].color);
     }
+    this.crearGrafico();
   }
 
   crearGrafico() {
     this.chartOptions = {
       series: [
         {
-          name: 'distibuted',
+          name: 'Cantidad',
           data: this.datos,
         },
       ],
@@ -132,7 +156,7 @@ export class GraficosComponent implements OnInit {
         height: 350,
         type: 'bar',
         events: {
-          click: function (chart, w, e) {},
+          click: function (chart, w, e) { },
         },
       },
       colors: this.colors,
@@ -161,5 +185,58 @@ export class GraficosComponent implements OnInit {
         },
       },
     };
+
+    this.chartOptionsPie = {
+      series: this.datos,
+      chart: {
+        width: 380,
+        type: "pie"
+      },
+      labels: this.categories,
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }
+      ]
+    };
+
+    this.chartOptionsRadar = {
+      series: [
+        {
+          name: "Series 1",
+          data: this.datos
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "radar"
+      },
+      title: {
+        text: "",
+      },
+      xaxis: {
+        categories: this.categories
+      }
+    };
+
+  }
+
+  //Crear un color de manera aleatoria
+  crearColorAleatorio():string{
+    const hexadecimal = new Array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
+    let colorAleatorio = '#';
+    for (let i = 0; i < 6; i++) {
+      let posarray = Math.trunc(Math.random()*hexadecimal.length);
+      colorAleatorio += hexadecimal[posarray];
+    }
+    return colorAleatorio;
   }
 }

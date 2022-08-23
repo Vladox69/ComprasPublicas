@@ -43,55 +43,12 @@ table {
     height: 250px;
 }
 
-/*
 .example-container {
-    height: 400px;
+    height: 500px;
     max-width: 100%;
     overflow: auto;
 }
 
-:host {
-	height: 100%;
-}
-
-:host mat-sidenav-container {
-	display: flex;
-	flex-flow: column;
-	height: 100%;
-	width: 100%;
-}
-
-:host mat-sidenav-container mat-sidenav {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	min-width: 300px;
-	max-width: 300px;
-	overflow-y: hidden;
-	background: white;
-	padding: 0 6px 0 18px;
-}
-
-:host mat-sidenav-container mat-sidenav-content {
-	display: flex;
-	flex-direction: column;
-	align-content: flex-start;
-	justify-content: flex-start;
-	height: 100%;
-	overflow-y: hidden;
-	background: white;
-}
-
-:host mat-sidenav-container mat-sidenav-content .table-container {
-	width: 150vw;
-}
-
-:host mat-sidenav-container mat-sidenav-content .mat-table {
-	display: block;
-	width: 100%;
-	overflow-x: auto;
-}
-*/
 table {
     border-collapse: collapse;
     table-layout: fixed;

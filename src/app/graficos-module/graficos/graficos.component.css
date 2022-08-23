@@ -1,5 +1,15 @@
 #chart {
-    max-width: 650px;
+    max-width:1500px;
     margin: 35px auto;
-  }
-  
+}
+
+#chartPie {
+  max-width: auto;
+  margin: 35px auto;
+  padding: 0;
+}
+
+#chartRadar {
+  max-width: auto;
+  margin: 35px auto;
+}
