@@ -12,7 +12,7 @@ export class TipoProcesosService {
   constructor(private http:HttpClient) { }
 
   getTipoProcesos():Observable<TipoProceso[]>{
-    return this.http.get<TipoProceso[]>(`${environment.url}/tipoProcesos`);
+    return this.http.get<TipoProceso[]>('api/tipoProcesos');
   }
 
 }

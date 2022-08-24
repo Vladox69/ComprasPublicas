@@ -12,7 +12,7 @@ export class ResolucionesService {
   constructor(private http:HttpClient) { }
 
   getResoluciones():Observable<Resolucion[]>{
-    return this.http.get<Resolucion[]>(`${environment.url}/resoluciones`);
+    return this.http.get<Resolucion[]>('api/resoluciones');
   }
   
 }

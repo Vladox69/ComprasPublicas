@@ -12,7 +12,7 @@ export class DepartamentosService {
   constructor(private http:HttpClient) { }
 
   getDepartamentos():Observable<Departamento[]>{
-    return this.http.get<Departamento[]>(`${environment.url}/departamentos`);
+    return this.http.get<Departamento[]>('api/departamentos');
   }
 
 }
