@@ -7,11 +7,17 @@ import {
   ApexPlotOptions,
   ApexYAxis,
   ApexLegend,
-  ApexGrid
-} from "ng-apexcharts";
+  ApexGrid,
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ApexTitleSubtitle
+} from 'ng-apexcharts';
+import { CompraPublica } from 'src/app/models/compras-publicas.interface';
+import { DetalleGrafico } from 'src/app/models/detalle-graficos.interface';
+import { TipoProceso } from 'src/app/models/tipo-proceso.interface';
 
 type ApexXAxis = {
-  type?: "category" | "datetime" | "numeric";
+  type?: 'category' | 'datetime' | 'numeric';
   categories?: any;
   labels?: {
     style?: {
@@ -33,6 +39,20 @@ export type ChartOptions = {
   legend: ApexLegend;
 };
 
+export type ChartOptionsPie = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+};
+
+export type ChartOptionsRadar = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  title: ApexTitleSubtitle;
+  xaxis: ApexXAxis;
+};
+
 @Component({
   selector: 'app-graficos-vacio',
   templateUrl: './graficos-vacio.component.html',
@@ -43,78 +63,115 @@ export class GraficosVacioComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
+  @ViewChild('chartPie') chartPie: ChartComponent;
+  public chartOptionsPie: Partial<ChartOptionsPie>;
+
+  @ViewChild("chartRadar") chartRadar: ChartComponent;
+  public chartOptionsRadar: Partial<ChartOptionsRadar>;
+
+
+  tipoProcesos: TipoProceso[] = [];
+  tipoProcesosVista: TipoProceso[] = [];
+  comprasPublicas: CompraPublica[] = [];
+  comprasPublicasVista: CompraPublica[] = [];
+  detalleGraficos: DetalleGrafico[] = [];
+
+  fromDate: any;
+  toDate: any;
+
+  datos: number[] = [5,6];
+  categories: string[] = ['ISO','CDC'];
+  colors: string[] = ['#008FFB','#008FFB'];
+
   constructor() {
+    this.crearGrafico();
+  }
+  ngOnInit(): void {
+  }
+
+  crearGrafico() {
     this.chartOptions = {
       series: [
         {
-          name: "distibuted",
-          data: [21, 22, 10, 28, 16, 21, 13, 30]
+          name: 'Cantidad',
+          data: this.datos,
+        },
+      ],
+      chart: {
+        height: 350,
+        type: 'bar',
+        events: {
+          click: function (chart, w, e) { },
+        },
+      },
+      colors: this.colors,
+      plotOptions: {
+        bar: {
+          columnWidth: '45%',
+          distributed: true,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      legend: {
+        show: false,
+      },
+      grid: {
+        show: false,
+      },
+      xaxis: {
+        categories: this.categories,
+        labels: {
+          style: {
+            colors: this.colors,
+            fontSize: '12px',
+          },
+        },
+      },
+    };
+
+    this.chartOptionsPie = {
+      series: this.datos,
+      chart: {
+        width: 380,
+        type: "pie"
+      },
+      labels: this.categories,
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }
+      ]
+    };
+
+    this.chartOptionsRadar = {
+      series: [
+        {
+          name: "Series 1",
+          data: this.datos
         }
       ],
       chart: {
         height: 350,
-        type: "bar",
-        events: {
-          click: function(chart, w, e) {
-            // console.log(chart, w, e)
-          }
-        }
+        type: "radar"
       },
-      colors: [
-        "#008FFB",
-        "#00E396",
-        "#FEB019",
-        "#FF4560",
-        "#775DD0",
-        "#546E7A",
-        "#26a69a",
-        "#D10CE8"
-      ],
-      plotOptions: {
-        bar: {
-          columnWidth: "45%",
-          distributed: true
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      legend: {
-        show: false
-      },
-      grid: {
-        show: false
+      title: {
+        text: "",
       },
       xaxis: {
-        categories: [
-          ["John", "Doe"],
-          ["Joe", "Smith"],
-          ["Jake", "Williams"],
-          "Amber",
-          ["Peter", "Brown"],
-          ["Mary", "Evans"],
-          ["David", "Wilson"],
-          ["Lily", "Roberts"]
-        ],
-        labels: {
-          style: {
-            colors: [
-              "#008FFB",
-              "#00E396",
-              "#FEB019",
-              "#FF4560",
-              "#775DD0",
-              "#546E7A",
-              "#26a69a",
-              "#D10CE8"
-            ],
-            fontSize: "12px"
-          }
-        }
+        categories: this.categories
       }
     };
-  }
-  ngOnInit(): void {
+
   }
 
 }

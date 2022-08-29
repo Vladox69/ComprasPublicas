@@ -1,0 +1,2 @@
+C:\Users\dbsubt.SUBTRANSMISION\Desktop\DesarrolloAplicación\workspace\Backup
+C:\Users\dbsubt.SUBTRANSMISION\AppData\Roaming\Quest Software\Toad for Oracle\12.0\User Files\Databases\test.DMP
