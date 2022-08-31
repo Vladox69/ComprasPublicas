@@ -10,6 +10,10 @@ import { TipoProcesosService } from 'src/app/services/tipo-procesos.service';
   templateUrl: './reportes-vacios.component.html',
   styleUrls: ['./reportes-vacios.component.css']
 })
+
+/**
+ * Clase para mostrar una primera vista de las comprar públicas sin datos
+ */
 export class ReportesVaciosComponent implements OnInit {
   departamentos: Departamento[] = [];
   tipoProcesos: TipoProceso[] = [];

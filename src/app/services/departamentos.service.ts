@@ -10,6 +10,10 @@ export class DepartamentosService {
 
   constructor(private http:HttpClient) { }
 
+  /**
+   * Método para recuperar los departamentos
+   * @returns - Array de departamentos
+   */
   getDepartamentos():Observable<Departamento[]>{
     return this.http.get<Departamento[]>('api/departamentos');
   }

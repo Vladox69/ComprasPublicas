@@ -10,6 +10,10 @@ export class TipoProcesosService {
 
   constructor(private http:HttpClient) { }
 
+  /**
+   * Método para recuperar todos los tipos de procesos
+   * @returns - Arrays de tipo de procesos
+   */
   getTipoProcesos():Observable<TipoProceso[]>{
     return this.http.get<TipoProceso[]>('api/tipoProcesos');
   }

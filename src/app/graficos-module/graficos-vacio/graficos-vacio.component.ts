@@ -58,6 +58,10 @@ export type ChartOptionsRadar = {
   templateUrl: './graficos-vacio.component.html',
   styleUrls: ['./graficos-vacio.component.css']
 })
+
+/**
+ * Clase para mostrar la primera vista de los gráficos sin datos
+ */
 export class GraficosVacioComponent implements OnInit {
 
   @ViewChild("chart") chart: ChartComponent;

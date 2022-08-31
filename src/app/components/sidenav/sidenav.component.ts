@@ -6,6 +6,10 @@ import {MediaMatcher} from '@angular/cdk/layout';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.css']
 })
+
+/**
+ * Clase para generar el menú y la navegación entre ventanas
+ */
 export class SidenavComponent implements OnDestroy {
 
   mobileQuery: MediaQueryList;

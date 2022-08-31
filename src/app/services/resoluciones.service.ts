@@ -9,7 +9,10 @@ import { Resolucion } from '../models/resolucion.interface';
 export class ResolucionesService {
 
   constructor(private http:HttpClient) { }
-
+  /**
+   * Método para recuperar todos los tipos de resoluciones
+   * @returns - Array de resoluciones
+   */
   getResoluciones():Observable<Resolucion[]>{
     return this.http.get<Resolucion[]>('api/resoluciones');
   }

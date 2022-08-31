@@ -19,6 +19,9 @@ import { TipoProceso } from 'src/app/models/tipo-proceso.interface';
 import { ComprasPublicasService } from 'src/app/services/compras-publicas.service';
 import { TipoProcesosService } from 'src/app/services/tipo-procesos.service';
 
+/**
+ * Clases importadas de módulo apexcharts
+ */
 type ApexXAxis = {
   type?: 'category' | 'datetime' | 'numeric';
   categories?: any;
@@ -98,6 +101,10 @@ export class GraficosComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  /**
+   * Método para obtener los datos de tipo de proceso, compras públicas entre una fecha de inicio y una fecha de fun
+   */
+
   getDatos() {
     this.tipoProcesoService.getTipoProcesos().subscribe((response) => {
       this.tipoProcesos = response;
@@ -112,6 +119,10 @@ export class GraficosComponent implements OnInit {
       });
   }
 
+  /**
+   * Método para obtener únicamente los tipos de procesos que se encuentren en los datos de compras públicas extraidos entre una fecha inicial y final
+   * 
+   */
   obtenerProcesos() {
     let auxComprasPublicas: CompraPublica[] = [];
     this.detalleGraficos = [];
@@ -132,6 +143,13 @@ export class GraficosComponent implements OnInit {
     }
   }
 
+
+  /**
+   * Método para dividir en arreglos diferentes los tipos de procesos
+   * datos son la cantidad de cada proceso que se mostrará en las gráficas
+   * categories son las abreviaturas de cada proceso que se mostrará en las gráficas
+   * colors son los diferentes colores de cada proceso que se mostrará en las gráficas
+   */
   dividirCaracteristicas() {
     this.datos = [];
     this.categories = [];
@@ -144,6 +162,10 @@ export class GraficosComponent implements OnInit {
     this.crearGrafico();
   }
 
+
+  /**
+   * Método para asignar variables datos, categories, colors a cada uno de los gráficos
+   */
   crearGrafico() {
     this.chartOptions = {
       series: [
@@ -229,7 +251,10 @@ export class GraficosComponent implements OnInit {
 
   }
 
-  //Crear un color de manera aleatoria
+  /**
+   * Método para generar colores de manera aleatoria
+   * @returns Un string con la cadena de color en hexadecimal
+   */
   crearColorAleatorio():string{
     const hexadecimal = new Array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
     let colorAleatorio = '#';

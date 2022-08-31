@@ -70,6 +70,10 @@ export class ReportesComponent implements OnInit {
     this.getDatos()
   }
 
+
+  /**
+   * Método para extracción de datos de departamentos, tipo de procesos, comprar públicas por medio de servicios
+   */
   getDatos() {
     this.departamentoService.getDepartamentos().subscribe((response) => {
       this.departamentos = response;
@@ -87,7 +91,9 @@ export class ReportesComponent implements OnInit {
   }
 
 
-
+  /**
+   * Método para realizar filtros por medio de tipo de proceso o departamentos 
+   */
   filtrar(): void {
     if (
       this.selectProceso == undefined &&
@@ -132,6 +138,11 @@ export class ReportesComponent implements OnInit {
 
   }
 
+  /**
+   * Método para realizar el conteo de las compras públicas ajudicadas
+   * @param procesoConteo - Array de compras públicas
+   * @returns número total de compras públicas adjudicadas
+   */
   conteo_adjudicados(procesoConteo: CompraPublica[]): number {
     procesoConteo = procesoConteo.filter(function (proceso) {
       return proceso.intres_DETALLE == 'ADJUDICADO';
@@ -139,6 +150,11 @@ export class ReportesComponent implements OnInit {
     return procesoConteo.length;
   }
 
+  /**
+   * Método para realizar el conteo de las compras públicas desiertas
+   * @param procesoConteo - Array de compras públicas
+   * @returns número total de compras públicas desiertas
+   */
   conteo_desiertos(procesoConteo: CompraPublica[]): number {
     procesoConteo = procesoConteo.filter(function (proceso) {
       return proceso.intres_DETALLE == 'DESIERTO';
@@ -146,6 +162,12 @@ export class ReportesComponent implements OnInit {
     return procesoConteo.length;
   }
 
+
+  /**
+   * Método para realizar el conteo de las compras públicas canceladas
+   * @param procesoConteo - Array de compras públicas
+   * @returns número total de compras públicas canceladas
+   */
   conteo_cancelados(procesoConteo: CompraPublica[]): number {
     procesoConteo = procesoConteo.filter(function (proceso) {
       return proceso.intres_DETALLE == 'CANCELADO';
@@ -153,6 +175,11 @@ export class ReportesComponent implements OnInit {
     return procesoConteo.length;
   }
 
+  /**
+   * Método para realizar el conteo de las compras públicas en borrador
+   * @param procesoConteo - Array de compras públicas
+   * @returns número total de compras públicas en borrador
+   */
   conteo_borradores(procesoConteo: CompraPublica[]): number {
     procesoConteo = procesoConteo.filter(function (proceso) {
       return proceso.intres_DETALLE == 'BORRADOR';
@@ -160,6 +187,11 @@ export class ReportesComponent implements OnInit {
     return procesoConteo.length;
   }
 
+  /**
+   * Método para realizar el conteo de las compras públicas no utilizadas
+   * @param procesoConteo - Array de compras públicas
+   * @returns número total de compras públicas no utilizadas
+   */
   conteo_no_utilizados(procesoConteo: CompraPublica[]): number {
     procesoConteo = procesoConteo.filter(function (proceso) {
       return proceso.intres_DETALLE == 'NO UTILIZADO';
@@ -167,6 +199,11 @@ export class ReportesComponent implements OnInit {
     return procesoConteo.length;
   }
 
+  /**
+   * Método para realizar la suma del total de las compras públicas
+   * @param procesos_total_contratado - Array de compras públicas
+   * @returns número total de contrato de las compras públicas
+   */
   calculo_total_contratado(procesos_total_contratado: CompraPublica[]): number {
     this.totalContratado = 0;
     let acumulador = 0;
@@ -177,7 +214,9 @@ export class ReportesComponent implements OnInit {
     return acumulador;
   }
 
-  //Descargar excel
+  /**
+   * Método para llamar al servicio de descargar excel
+   */
   async downloadExcel(){
     
     const details_val=[
@@ -193,12 +232,16 @@ export class ReportesComponent implements OnInit {
 
   }
 
-  //Descargar pdf
+  /**
+   * Método para llamar al servicio de descargar pdf
+   */
   downloadPdf(){
     this.pdfService.exportToPdf('tableExporter','detalleExporter');
   }
 
-  //Detalle de las compras
+  /**
+   * Método para la creación del detalle de cada resolución de compra y total contratado
+   */
   crearDetalleCompras(){
     this.detalleCompras=[];
     this.detalleCompras.push(new DetalleCompra("Adjudicados",this.totalAdjudicados));

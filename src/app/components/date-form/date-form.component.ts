@@ -8,6 +8,10 @@ import { Router, Event, NavigationEnd } from '@angular/router';
   templateUrl: './date-form.component.html',
   styleUrls: ['./date-form.component.css'],
 })
+
+/**
+ * Clase para la creación del componente fecha
+ */
 export class DateFormComponent implements OnInit {
   currentRoute: string;
   route:string;
@@ -15,7 +19,7 @@ export class DateFormComponent implements OnInit {
   showEmpityComponentReportes:boolean=false;
   
   constructor(private formBuilder: FormBuilder, private router: Router) {
-    //Saber en que ruta nos encontramos
+    //Proceso para saber en que ruta nos encontramos
     this.currentRoute = 'Home';
     
     this.router.events.subscribe((event: Event) => {
@@ -45,7 +49,7 @@ export class DateFormComponent implements OnInit {
     );
   }
 
-  //Saber si la fecha es inicial es menor que la final 
+  //Proceso para comprobar que la fecha inicial es menor que la final 
   checkDates(group: FormGroup) {
     if (group.controls.toDate.value < group.controls.fromDate.value) {
       return { notValid: true };
@@ -67,6 +71,9 @@ export class DateFormComponent implements OnInit {
     toDate: new FormControl(''),
   });
 
+  /**
+   * Método que devuelve cual es la ruta actual en caso de recargar la página o caida de internet
+   */
   onClickObtenerResultados() {
     var datePipe = new DatePipe('en-US');
     this.route=this.currentRoute.includes('/reportes')?'/reportes':'/graficos'; 

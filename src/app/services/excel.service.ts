@@ -13,7 +13,11 @@ export class ExcelService {
 
   constructor() { }
 
-  //Descargar excel
+  /**
+   * Método para la descarga del archivo excel
+   * @param details_val - Array de cantidad de cada resolución y el total contratado
+   * @param comprasPublicas - Array de compras públicas
+   */
   async dowloadExcel(details_val:number[],comprasPublicas:CompraPublica[]){
     this._workbook=new Workbook();
     await this.create_sheet(details_val,comprasPublicas);
@@ -23,7 +27,11 @@ export class ExcelService {
     })
   }
 
-  //Crear archivo de excel
+  /**
+   * Método para crear archivo de excel
+   * @param details_val - Array de cantidad de cada resolución y el total contratado
+   * @param comprasPublicas - Array de compras públicas
+   */
   private async create_sheet(details_val:number[],comprasPublicas:CompraPublica[]){
     //Añadir hoja
     const sheet= this._workbook.addWorksheet('Compras Públicas');
@@ -93,7 +101,7 @@ export class ExcelService {
     //const detailRow=sheet.getRow(valor_columna_sig);
     
     //detailRow.values=details;
-
+    //Insertar los detalles de cada resolución y el total contratado
     for(let index=0;index<details.length;index++){
       const col='A';
       const col_val='B';
@@ -106,7 +114,7 @@ export class ExcelService {
       detailVal.value=details_val[index];
     }
 
-
+    //Insertar todos los valores
     for(let index=0;index<rowsToInsert!.length;index++){
       const itemData=comprasPublicas[index];
       const row =rowsToInsert![index];
@@ -125,6 +133,7 @@ export class ExcelService {
         itemData.intdep_DESCRIPCION
       ];
     }
+    //Dar formato de tabla y estilos al texto
     sheet.eachRow({ includeEmpty: true }, function(row, rowNumber) {
       row.eachCell({ includeEmpty: true }, function(cell, colNumber) {
         cell.border = {

@@ -4,6 +4,12 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class PdfService {
+  /**
+   * Método para exportar a pdf la tabla, detalle de las resoluciones y el total contratado
+   * @param tableId - string donde se envia el id de la tabla a exportar
+   * @param detalleId - string donde se envia el id del detalle de las resoluciones y el total contratado a exportar 
+   * @param name 
+   */
    exportToPdf(tableId: string,detalleId:string, name?: string) {
     let printContents, popupWin,printDetail;
    printContents = document.getElementById(tableId).innerHTML;
