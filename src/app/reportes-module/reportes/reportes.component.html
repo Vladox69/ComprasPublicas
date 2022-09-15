@@ -1,3 +1,4 @@
+<!--Botones y filtros -->
 <div class="container reportes-componentes">
     <!--Botones -->
     <div class="botones">
@@ -129,12 +130,13 @@
         </table>
     </div>
 </div>
+<!--Detalle de compra-->
 <mat-card class="card-detail mat-elevation-z8 m-12 m-3 " id="detalleExporter">
     <mat-card-title>Detalle de las compras</mat-card-title>
     <hr>
     <mat-card-content>
         <div class="detalle-compra" *ngFor="let detalle of detalleCompras">
-            <p>{{detalle.detalle}}:{{detalle.cantidad}}</p>
+            <p>{{detalle.detalle}}{{detalle.cantidad}}</p>
         </div>
         
     </mat-card-content>

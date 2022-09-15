@@ -14,8 +14,8 @@ export class TipoProcesosService {
    * Método para recuperar todos los tipos de procesos
    * @returns - Arrays de tipo de procesos
    */
-  getTipoProcesos():Observable<TipoProceso[]>{
-    return this.http.get<TipoProceso[]>('api/tipoProcesos');
+  async getTipoProcesos():Promise<Observable<TipoProceso[]>>{
+    return  this.http.get<TipoProceso[]>('api/tipoProcesos');
   }
 
 }

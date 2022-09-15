@@ -105,18 +105,22 @@ export class GraficosComponent implements OnInit {
    * Método para obtener los datos de tipo de proceso, compras públicas entre una fecha de inicio y una fecha de fun
    */
 
-  getDatos() {
-    this.tipoProcesoService.getTipoProcesos().subscribe((response) => {
-      this.tipoProcesos = response;
+  async getDatos() {
+    this.tipoProcesoService.getTipoProcesos().then(response=>{
+      response.subscribe((data) => {
+        this.tipoProcesos = data;
+      })
     });
 
-    this.comprasPublicasService
+    await this.comprasPublicasService
       .getComprasPublicasByDate(this.fromDate, this.toDate)
-      .subscribe((response) => {
-        this.comprasPublicas = response;
-        this.obtenerProcesos();
-        this.dividirCaracteristicas();
-      });
+      .then(response=>{
+        response.subscribe((data) => {
+          this.comprasPublicas = data;
+          this.obtenerProcesos();
+          this.dividirCaracteristicas();
+        });
+      })
   }
 
   /**

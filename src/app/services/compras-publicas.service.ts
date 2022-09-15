@@ -14,8 +14,8 @@ export class ComprasPublicasService {
    * Método para recuperar todas las compras públicas
    * @returns - Array de comprar públicas
    */
-  getComprasPublicas():Observable<CompraPublica[]>{
-    return this.http.get<CompraPublica[]>('api/reportes');
+  async getComprasPublicas():Promise<Observable<CompraPublica[]>>{
+    return  this.http.get<CompraPublica[]>('api/reportes');
   }
 
   /**
@@ -24,7 +24,7 @@ export class ComprasPublicasService {
    * @param to - fecha de final
    * @returns - Array de comprar públicas
    */
-  getComprasPublicasByDate(from:any,to:any):Observable<CompraPublica[]>{
+  async getComprasPublicasByDate(from:any,to:any):Promise<Observable<CompraPublica[]>>{
     return this.http.get<CompraPublica[]>(`api/reportes/${from}/${to}`);
   }
 

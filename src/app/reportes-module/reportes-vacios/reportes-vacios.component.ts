@@ -52,8 +52,10 @@ export class ReportesVaciosComponent implements OnInit {
     this.departamentoService.getDepartamentos().subscribe((response) => {
       this.departamentos = response;
     });
-    this.tipoProcesoServices.getTipoProcesos().subscribe((response) => {
-      this.tipoProcesos = response;
+    this.tipoProcesoServices.getTipoProcesos().then(response=>{
+      response.subscribe((data) => {
+        this.tipoProcesos = data;
+      })
     });
   }
 

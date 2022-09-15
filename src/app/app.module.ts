@@ -12,7 +12,6 @@ import { NgApexchartsModule } from "ng-apexcharts";
 import { DateFormComponent } from './components/date-form/date-form.component';
 import { ReportesComponent } from './reportes-module/reportes/reportes.component';
 import { GraficosComponent } from './graficos-module/graficos/graficos.component';
-import { FiltrosComponent } from './components/filtros/filtros.component';
 import { VacioComponent } from './components/vacio/vacio.component';
 import { GraficosVacioComponent } from './graficos-module/graficos-vacio/graficos-vacio.component';
 import { ReportesVaciosComponent } from './reportes-module/reportes-vacios/reportes-vacios.component';
@@ -25,7 +24,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DateFormComponent,
     ReportesComponent,
     GraficosComponent,
-    FiltrosComponent,
     VacioComponent,
     GraficosVacioComponent,
     ReportesVaciosComponent,

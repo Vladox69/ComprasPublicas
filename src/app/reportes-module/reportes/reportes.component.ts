@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CompraPublica } from 'src/app/models/compras-publicas.interface';
 import { Departamento } from 'src/app/models/departamento.interface';
 import { TipoProceso } from 'src/app/models/tipo-proceso.interface';
 import { ComprasPublicasService } from 'src/app/services/compras-publicas.service';
 import { DepartamentosService } from 'src/app/services/departamentos.service';
+import { ResolucionesService } from 'src/app/services/resoluciones.service';
 import { TipoProcesosService } from 'src/app/services/tipo-procesos.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { PdfService } from 'src/app/services/pdf.service';
 import { DetalleCompra } from 'src/app/models/detalle-compra.interface';
+import { Resolucion } from 'src/app/models/resolucion.interface';
+import { HEADERS } from 'src/app/services/encabezados';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-reportes',
@@ -16,28 +20,31 @@ import { DetalleCompra } from 'src/app/models/detalle-compra.interface';
   styleUrls: ['./reportes.component.css'],
 })
 export class ReportesComponent implements OnInit {
-  
   departamentos: Departamento[] = [];
   tipoProcesos: TipoProceso[] = [];
-  
+  resoluciones: Resolucion[] = [];
+  headers: string[] = HEADERS;
+
+  aux: CompraPublica[] = [];
+
   comprasPublicas: CompraPublica[] = [];
-  comprasPublicasFilter:CompraPublica[]=[];
-  comprasPublicasConteo:CompraPublica[]=[];
-  detalleCompras:DetalleCompra[]=[];
+  comprasPublicasFilter: CompraPublica[] = [];
+  comprasPublicasConteo: CompraPublica[] = [];
+  detalleCompras: DetalleCompra[] = [];
 
-  totalDesiertos:number=0;
-  totalAdjudicados:number=0;
-  totalCancelados:number=0;
-  totalBorradores:number=0;
-  totalNoUtilizados:number=0;
+  totalDesiertos: number = 0;
+  totalAdjudicados: number = 0;
+  totalCancelados: number = 0;
+  totalBorradores: number = 0;
+  totalNoUtilizados: number = 0;
 
-  totalContratado:number=0;
+  totalContratado: number = 0;
 
-  selectProceso:string;
-  selectDepartamento:string;
+  selectProceso: string;
+  selectDepartamento: string;
 
-  fromDate:any;
-  toDate:any;
+  fromDate: any;
+  toDate: any;
 
   displayedColumns: string[] = [
     'INTRP_FECHA_PUBLICACION',
@@ -58,41 +65,49 @@ export class ReportesComponent implements OnInit {
     private departamentoService: DepartamentosService,
     private tipoProcesoServices: TipoProcesosService,
     private comprasPublicasService: ComprasPublicasService,
-    private activedRoute:ActivatedRoute,
-    private excelService:ExcelService,
-    private pdfService:PdfService
+    private resolucionService: ResolucionesService,
+    private activedRoute: ActivatedRoute,
+    private excelService: ExcelService,
+    private pdfService: PdfService
   ) {
-    this.fromDate=this.activedRoute.snapshot.params.fromDate;
-    this.toDate=this.activedRoute.snapshot.params.toDate
+    this.fromDate = this.activedRoute.snapshot.params.fromDate;
+    this.toDate = this.activedRoute.snapshot.params.toDate;
   }
 
   ngOnInit(): void {
-    this.getDatos()
+    this.getDatos();
   }
-
 
   /**
    * Método para extracción de datos de departamentos, tipo de procesos, comprar públicas por medio de servicios
    */
-  getDatos() {
+  async getDatos() {
     this.departamentoService.getDepartamentos().subscribe((response) => {
       this.departamentos = response;
     });
-    this.tipoProcesoServices.getTipoProcesos().subscribe((response) => {
-      this.tipoProcesos = response;
+    await this.tipoProcesoServices.getTipoProcesos().then(response=>{
+      response.subscribe((data) => {
+        this.tipoProcesos = data;
+      });
+    })
+    this.resolucionService.getResoluciones().subscribe((response) => {
+      this.resoluciones = response;
     });
-    this.comprasPublicasService
-    .getComprasPublicasByDate(this.fromDate, this.toDate)
-    .subscribe((response) => {
-      this.comprasPublicas = response;
-      this.comprasPublicasFilter=response;
-      this.filtrar();
-    });
+
+    await this.comprasPublicasService
+      .getComprasPublicasByDate(this.fromDate, this.toDate)
+      .then((response:Observable<any>) => {
+        response.subscribe((data) => {
+          console.log('.');
+          this.comprasPublicas = data;
+          this.comprasPublicasFilter = data;
+          this.filtrar();
+        });
+      });
   }
 
-
   /**
-   * Método para realizar filtros por medio de tipo de proceso o departamentos 
+   * Método para realizar filtros por medio de tipo de proceso o departamentos
    */
   filtrar(): void {
     if (
@@ -105,98 +120,60 @@ export class ReportesComponent implements OnInit {
       this.selectDepartamento != ''
     ) {
       let departamento = this.selectDepartamento;
-      this.comprasPublicas = this.comprasPublicasFilter.filter(function (proceso) {
+      this.comprasPublicas = this.comprasPublicasFilter.filter(function (
+        proceso
+      ) {
         return proceso.intdep_DESCRIPCION == departamento;
       });
-      
     } else if (
       this.selectProceso != '' &&
       this.selectDepartamento == undefined
     ) {
       let proceso_cod = this.selectProceso;
-      this.comprasPublicas = this.comprasPublicasFilter.filter(function (proceso) {
+      this.comprasPublicas = this.comprasPublicasFilter.filter(function (
+        proceso
+      ) {
         return proceso.intpro_ABREV == proceso_cod;
       });
-      
     } else if (this.selectProceso != '' && this.selectDepartamento != '') {
       let departamento = this.selectDepartamento;
       let proceso_cod = this.selectProceso;
-      this.comprasPublicas = this.comprasPublicasFilter.filter(function (proceso) {
+      this.comprasPublicas = this.comprasPublicasFilter.filter(function (
+        proceso
+      ) {
         return (
           proceso.intdep_DESCRIPCION == departamento &&
           proceso.intpro_ABREV == proceso_cod
         );
       });
     }
-    this.totalAdjudicados = this.conteo_adjudicados(this.comprasPublicas);
-    this.totalCancelados = this.conteo_cancelados(this.comprasPublicas);
-    this.totalDesiertos = this.conteo_desiertos(this.comprasPublicas);
-    this.totalBorradores = this.conteo_borradores(this.comprasPublicas);
-    this.totalNoUtilizados = this.conteo_no_utilizados(this.comprasPublicas);
-    this.totalContratado = parseFloat(this.calculo_total_contratado(this.comprasPublicas).toFixed(2));
-    this.crearDetalleCompras();
-
+    this.totalContratado = parseFloat(
+      this.calculo_total_contratado(this.comprasPublicas).toFixed(2)
+    );
+    this.conteo_cantidad_proceso(this.comprasPublicas);
   }
 
   /**
-   * Método para realizar el conteo de las compras públicas ajudicadas
+   * Método para calcular el total de cada resolución y total contratado
    * @param procesoConteo - Array de compras públicas
-   * @returns número total de compras públicas adjudicadas
    */
-  conteo_adjudicados(procesoConteo: CompraPublica[]): number {
-    procesoConteo = procesoConteo.filter(function (proceso) {
-      return proceso.intres_DETALLE == 'ADJUDICADO';
-    });
-    return procesoConteo.length;
-  }
-
-  /**
-   * Método para realizar el conteo de las compras públicas desiertas
-   * @param procesoConteo - Array de compras públicas
-   * @returns número total de compras públicas desiertas
-   */
-  conteo_desiertos(procesoConteo: CompraPublica[]): number {
-    procesoConteo = procesoConteo.filter(function (proceso) {
-      return proceso.intres_DETALLE == 'DESIERTO';
-    });
-    return procesoConteo.length;
-  }
-
-
-  /**
-   * Método para realizar el conteo de las compras públicas canceladas
-   * @param procesoConteo - Array de compras públicas
-   * @returns número total de compras públicas canceladas
-   */
-  conteo_cancelados(procesoConteo: CompraPublica[]): number {
-    procesoConteo = procesoConteo.filter(function (proceso) {
-      return proceso.intres_DETALLE == 'CANCELADO';
-    });
-    return procesoConteo.length;
-  }
-
-  /**
-   * Método para realizar el conteo de las compras públicas en borrador
-   * @param procesoConteo - Array de compras públicas
-   * @returns número total de compras públicas en borrador
-   */
-  conteo_borradores(procesoConteo: CompraPublica[]): number {
-    procesoConteo = procesoConteo.filter(function (proceso) {
-      return proceso.intres_DETALLE == 'BORRADOR';
-    });
-    return procesoConteo.length;
-  }
-
-  /**
-   * Método para realizar el conteo de las compras públicas no utilizadas
-   * @param procesoConteo - Array de compras públicas
-   * @returns número total de compras públicas no utilizadas
-   */
-  conteo_no_utilizados(procesoConteo: CompraPublica[]): number {
-    procesoConteo = procesoConteo.filter(function (proceso) {
-      return proceso.intres_DETALLE == 'NO UTILIZADO';
-    });
-    return procesoConteo.length;
+  conteo_cantidad_proceso(procesoConteo: CompraPublica[]) {
+    let auxConteo: CompraPublica[];
+    auxConteo = procesoConteo;
+    for (let index in this.resoluciones) {
+      procesoConteo = auxConteo.filter((proceso) => {
+        return proceso.intres_DETALLE == this.resoluciones[index].detalle;
+      });
+      this.detalleCompras.push(
+        new DetalleCompra(
+          this.resoluciones[index].detalle + ': ',
+          procesoConteo.length
+        )
+      );
+    }
+    this.detalleCompras.push(
+      new DetalleCompra('Total contratado: $ ', this.totalContratado)
+    );
   }
 
   /**
@@ -217,39 +194,14 @@ export class ReportesComponent implements OnInit {
   /**
    * Método para llamar al servicio de descargar excel
    */
-  async downloadExcel(){
-    
-    const details_val=[
-      this.totalAdjudicados,
-      this.totalDesiertos,
-      this.totalNoUtilizados,
-      this.totalCancelados,
-      this.totalBorradores,
-      this.totalContratado
-    ]   
-    
-    this.excelService.dowloadExcel(details_val,this.comprasPublicas);
-
+  async downloadExcel() {
+    this.excelService.dowloadExcel(this.detalleCompras, this.comprasPublicas);
   }
 
   /**
    * Método para llamar al servicio de descargar pdf
    */
-  downloadPdf(){
-    this.pdfService.exportToPdf('tableExporter','detalleExporter');
+  downloadPdf() {
+    this.pdfService.exportToPdf('tableExporter', 'detalleExporter');
   }
-
-  /**
-   * Método para la creación del detalle de cada resolución de compra y total contratado
-   */
-  crearDetalleCompras(){
-    this.detalleCompras=[];
-    this.detalleCompras.push(new DetalleCompra("Adjudicados",this.totalAdjudicados));
-    this.detalleCompras.push(new DetalleCompra("Desiertos",this.totalDesiertos));
-    this.detalleCompras.push(new DetalleCompra("Cancelados",this.totalCancelados));
-    this.detalleCompras.push(new DetalleCompra("No utilizados",this.totalNoUtilizados));
-    this.detalleCompras.push(new DetalleCompra("Borradores",this.totalBorradores));
-    this.detalleCompras.push(new DetalleCompra("Total contratado",this.totalContratado));
-  }
-
 }
