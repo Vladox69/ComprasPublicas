@@ -5,17 +5,11 @@ import { GraficosComponent } from './graficos-module/graficos/graficos.component
 import { ReportesComponent } from './reportes-module/reportes/reportes.component';
 
 const routes: Routes = [
-  { path: '', component: VacioComponent },
-  {
-    path: 'reportes',
-    component: VacioComponent,
-    children: [
-      { path: 'fechas/:fromDate/:toDate', component: ReportesComponent },
-    ],
-  },
-  { path: 'graficos', component: VacioComponent,children:[
-    {path:'fechas/:fromDate/:toDate',component:GraficosComponent}
-  ] },
+  { path: '', redirectTo:'reportes',pathMatch:'full'},
+  { path:'reportes',component:ReportesComponent},
+  { path:'reportes/fechas/:fromDate/:toDate',component:ReportesComponent},
+  { path:'graficos',component:GraficosComponent},
+  { path:'graficos/fechas/:fromDate/:toDate',component:GraficosComponent}, 
 ];
 
 @NgModule({

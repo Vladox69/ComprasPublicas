@@ -75,7 +75,9 @@ export class ReportesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getDatos();
+    if(this.fromDate!=null){
+      this.getDatos();
+    }
   }
 
   /**

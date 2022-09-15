@@ -96,10 +96,14 @@ export class GraficosComponent implements OnInit {
     this.fromDate = this.activedRoute.snapshot.params.fromDate;
     this.toDate = this.activedRoute.snapshot.params.toDate;
     this.crearGrafico();
-    this.getDatos();
+    
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    if(this.fromDate!=null){
+      this.getDatos();
+    }
+  }
 
   /**
    * Método para obtener los datos de tipo de proceso, compras públicas entre una fecha de inicio y una fecha de fun
