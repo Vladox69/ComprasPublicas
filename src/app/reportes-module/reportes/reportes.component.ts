@@ -13,6 +13,8 @@ import { DetalleCompra } from 'src/app/models/detalle-compra.interface';
 import { Resolucion } from 'src/app/models/resolucion.interface';
 import { HEADERS } from 'src/app/services/encabezados';
 import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-reportes',
@@ -24,7 +26,7 @@ export class ReportesComponent implements OnInit {
   tipoProcesos: TipoProceso[] = [];
   resoluciones: Resolucion[] = [];
   headers: string[] = HEADERS;
-
+  
   aux: CompraPublica[] = [];
 
   comprasPublicas: CompraPublica[] = [];
@@ -68,7 +70,8 @@ export class ReportesComponent implements OnInit {
     private resolucionService: ResolucionesService,
     private activedRoute: ActivatedRoute,
     private excelService: ExcelService,
-    private pdfService: PdfService
+    private pdfService: PdfService,
+    private dialog: MatDialog
   ) {
     this.fromDate = this.activedRoute.snapshot.params.fromDate;
     this.toDate = this.activedRoute.snapshot.params.toDate;
@@ -78,6 +81,21 @@ export class ReportesComponent implements OnInit {
     if(this.fromDate!=null){
       this.getDatos();
     }
+  }
+
+  /**
+   * Método para abrir un dialog de confirmacion
+   */
+  openDialog(): void {
+    let dialogRef = this.dialog.open(DialogComponent, {
+      width: '250px'
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.downloadExcel();
+      }
+    });
   }
 
   /**
@@ -160,6 +178,7 @@ export class ReportesComponent implements OnInit {
    * @param procesoConteo - Array de compras públicas
    */
   conteo_cantidad_proceso(procesoConteo: CompraPublica[]) {
+    this.detalleCompras=[];
     let auxConteo: CompraPublica[];
     auxConteo = procesoConteo;
     for (let index in this.resoluciones) {
