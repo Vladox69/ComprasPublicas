@@ -2,21 +2,20 @@
     <form  action="" [formGroup]="formData">
  
         <mat-form-field appearance="outline">
+            <mat-label>Destinno</mat-label>
+            <input matInput type="email" formControlName="destino"/>
+        </mat-form-field><br>
+
+        <mat-form-field appearance="outline">
             <mat-label>Asunto</mat-label>
-            <input matInput  formControlName="Asunto"/>
+            <input matInput  formControlName="asunto"/>
         </mat-form-field><br>
-        <mat-form-field appearance="outline">
-            <mat-label>Remitente</mat-label>
-            <input matInput type="email" formControlName="Remitente"/>
-        </mat-form-field><br>
-        <mat-form-field appearance="outline">
-            <mat-label>Destinatario</mat-label>
-            <input matInput type="email" formControlName="Destinatario"/>
-        </mat-form-field><br>
+
         <mat-form-field appearance="outline">
             <mat-label>Message</mat-label>
-            <textarea matInput placeholder="Message..." formControlName="Mensaje" ></textarea>
+            <textarea matInput placeholder="Message..." formControlName="mensaje" ></textarea>
         </mat-form-field><br>
+        
         <button [disabled]="!formData.valid" mat-stroked-button color="accent" (click)="onClickEnviar()" >Enviar </button>
     </form>
 </div>

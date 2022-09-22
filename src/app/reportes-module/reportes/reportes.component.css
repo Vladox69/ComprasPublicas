@@ -40,18 +40,14 @@ table {
 
 .card-detail{
     width: 350px;
-    height: 250px;
+    height: 350px;
 }
 
-.example-container {
-    max-height: 500px;
-    max-width: 100%;
-    overflow: auto;
+.container {
+    max-width: 99%;
 }
 
 table {
-    border-collapse: collapse;
-    table-layout: fixed;
     width: 100%;
 }
 
@@ -59,4 +55,11 @@ table td {
     border: solid 1px #999999;
     width: 100px;
     word-wrap: break-word;
+}
+
+.num-cod{
+    width: 75px;
+}
+.oculto{
+    display: none;
 }

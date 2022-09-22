@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CompraPublica } from 'src/app/models/compras-publicas.interface';
 import { Departamento } from 'src/app/models/departamento.interface';
@@ -15,6 +15,8 @@ import { HEADERS } from 'src/app/services/encabezados';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-reportes',
@@ -22,12 +24,17 @@ import { DialogComponent } from '../dialog/dialog.component';
   styleUrls: ['./reportes.component.css'],
 })
 export class ReportesComponent implements OnInit {
+
+  dataSource:any;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  
   departamentos: Departamento[] = [];
   tipoProcesos: TipoProceso[] = [];
   resoluciones: Resolucion[] = [];
   headers: string[] = HEADERS;
-  
+
   aux: CompraPublica[] = [];
+  posicionRow:string[]=[];
 
   comprasPublicas: CompraPublica[] = [];
   comprasPublicasFilter: CompraPublica[] = [];
@@ -49,6 +56,7 @@ export class ReportesComponent implements OnInit {
   toDate: any;
 
   displayedColumns: string[] = [
+    'No.',
     'INTRP_FECHA_PUBLICACION',
     'INTPRO_DESCRIPCION',
     'INTPRO_ABREV',
@@ -78,7 +86,7 @@ export class ReportesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.fromDate!=null){
+    if (this.fromDate != null) {
       this.getDatos();
     }
   }
@@ -88,11 +96,11 @@ export class ReportesComponent implements OnInit {
    */
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogComponent, {
-      width: '250px'
+      width: '250px',
     });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
         this.downloadExcel();
       }
     });
@@ -105,22 +113,23 @@ export class ReportesComponent implements OnInit {
     this.departamentoService.getDepartamentos().subscribe((response) => {
       this.departamentos = response;
     });
-    await this.tipoProcesoServices.getTipoProcesos().then(response=>{
+    await this.tipoProcesoServices.getTipoProcesos().then((response) => {
       response.subscribe((data) => {
         this.tipoProcesos = data;
       });
-    })
+    });
     this.resolucionService.getResoluciones().subscribe((response) => {
       this.resoluciones = response;
     });
 
     await this.comprasPublicasService
       .getComprasPublicasByDate(this.fromDate, this.toDate)
-      .then((response:Observable<any>) => {
+      .then((response: Observable<any>) => {
         response.subscribe((data) => {
-          console.log('.');
           this.comprasPublicas = data;
           this.comprasPublicasFilter = data;
+          this.dataSource = new MatTableDataSource<CompraPublica>(this.comprasPublicas);
+          this.dataSource.paginator = this.paginator;
           this.filtrar();
         });
       });
@@ -130,42 +139,31 @@ export class ReportesComponent implements OnInit {
    * Método para realizar filtros por medio de tipo de proceso o departamentos
    */
   filtrar(): void {
-    if (
-      this.selectProceso == undefined &&
-      this.selectDepartamento == undefined
-    ) {
+    if (this.selectProceso == undefined &&this.selectDepartamento == undefined) {
       this.comprasPublicas = this.comprasPublicasFilter;
-    } else if (
-      this.selectProceso == undefined &&
-      this.selectDepartamento != ''
-    ) {
+      this.dataSource.data=this.comprasPublicas;
+    } else if (this.selectProceso == undefined &&this.selectDepartamento != '') {
       let departamento = this.selectDepartamento;
-      this.comprasPublicas = this.comprasPublicasFilter.filter(function (
-        proceso
-      ) {
+      this.comprasPublicas = this.comprasPublicasFilter.filter(function (proceso) {
         return proceso.intdep_DESCRIPCION == departamento;
       });
-    } else if (
-      this.selectProceso != '' &&
-      this.selectDepartamento == undefined
-    ) {
+      this.dataSource.data=this.comprasPublicas;
+    } else if (this.selectProceso != '' &&this.selectDepartamento == undefined) {
       let proceso_cod = this.selectProceso;
-      this.comprasPublicas = this.comprasPublicasFilter.filter(function (
-        proceso
-      ) {
-        return proceso.intpro_ABREV == proceso_cod;
-      });
+      this.comprasPublicas = this.comprasPublicasFilter.filter(function (proceso) {
+        return proceso.intpro_ABREV == proceso_cod;});
+        this.dataSource.data=this.comprasPublicas;
     } else if (this.selectProceso != '' && this.selectDepartamento != '') {
       let departamento = this.selectDepartamento;
       let proceso_cod = this.selectProceso;
-      this.comprasPublicas = this.comprasPublicasFilter.filter(function (
-        proceso
-      ) {
-        return (
-          proceso.intdep_DESCRIPCION == departamento &&
-          proceso.intpro_ABREV == proceso_cod
-        );
+      this.comprasPublicas = this.comprasPublicasFilter.filter(function (proceso) {
+        return (proceso.intdep_DESCRIPCION == departamento &&proceso.intpro_ABREV == proceso_cod);
       });
+      this.dataSource.data=this.comprasPublicas;
+    }
+    this.posicionRow=[];
+    for (let iterator in this.comprasPublicas) {
+      this.posicionRow.push(iterator+1);
     }
     this.totalContratado = parseFloat(
       this.calculo_total_contratado(this.comprasPublicas).toFixed(2)
@@ -178,8 +176,9 @@ export class ReportesComponent implements OnInit {
    * @param procesoConteo - Array de compras públicas
    */
   conteo_cantidad_proceso(procesoConteo: CompraPublica[]) {
-    this.detalleCompras=[];
+    this.detalleCompras = [];
     let auxConteo: CompraPublica[];
+    let auxEnProceso: CompraPublica[];
     auxConteo = procesoConteo;
     for (let index in this.resoluciones) {
       procesoConteo = auxConteo.filter((proceso) => {
@@ -192,6 +191,15 @@ export class ReportesComponent implements OnInit {
         )
       );
     }
+    auxEnProceso = auxConteo.filter((proceso) => {
+      return proceso.intres_DETALLE === null;
+    });
+    this.detalleCompras.push(
+      new DetalleCompra('EN PROCESO: ', auxEnProceso.length)
+    );
+    this.detalleCompras.push(
+      new DetalleCompra('Total de procesos: ', this.comprasPublicas.length)
+    );
     this.detalleCompras.push(
       new DetalleCompra('Total contratado: $ ', this.totalContratado)
     );

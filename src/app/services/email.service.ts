@@ -8,8 +8,8 @@ export class EmailService {
 
   constructor(private http: HttpClient) { }
 
-  onSubmit(data: any) {
-    return this.http.post('api/sendEmail', data);
+  onSubmit(data: string) {
+    return this.http.post('api/enviarCorreo', data);
   }
 
 

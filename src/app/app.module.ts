@@ -8,7 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import {HttpClientModule} from '@angular/common/http';
 import { NgApexchartsModule } from "ng-apexcharts";
-import {MatDialogModule} from '@angular/material/dialog';
 
 import { DateFormComponent } from './components/date-form/date-form.component';
 import { ReportesComponent } from './reportes-module/reportes/reportes.component';
@@ -17,9 +16,10 @@ import { VacioComponent } from './components/vacio/vacio.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestComponent } from './test/test.component';
 import { DialogComponent } from './reportes-module/dialog/dialog.component';
+import { DialogErrorComponent } from './components/dialog-error/dialog-error.component';
 
 @NgModule({
-  entryComponents: [DialogComponent],
+  entryComponents: [DialogComponent,DialogErrorComponent],
   declarations: [
     AppComponent,
     SidenavComponent,
@@ -29,6 +29,7 @@ import { DialogComponent } from './reportes-module/dialog/dialog.component';
     VacioComponent,
     TestComponent,
     DialogComponent,
+    DialogErrorComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,7 +40,6 @@ import { DialogComponent } from './reportes-module/dialog/dialog.component';
     ReactiveFormsModule,
     FormsModule,
     NgApexchartsModule,
-    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent],

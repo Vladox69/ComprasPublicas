@@ -14,16 +14,22 @@ export class SidenavComponent implements OnDestroy {
 
   mobileQuery: MediaQueryList;
 
-     fillerNav=[
+  fillerNav=[
        {
-         name:'Reportes por Fecha',
-         route:'reportes',
-         icon:'date_range'
-       },
-       {
-         name:'Graficas',
-         route:'graficos',
-         icon:'assessment'
+         name:'Compras públicas',
+         icon:'request_quote',
+         children:[
+          {
+            name:'Reportes',
+            route:'reportes',
+            icon:'date_range',
+          },
+          {
+            name:'Gráficos',
+            route:'graficos',
+            icon:'equalizer',
+          }
+         ]
        }
    ]
    

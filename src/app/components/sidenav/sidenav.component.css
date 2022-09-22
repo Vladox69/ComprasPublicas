@@ -37,4 +37,8 @@
   .icono{
       margin-right: 10px;
   }
+
+  mat-expansion-panel-header{
+    padding: 0px 10px;
+  }
   

@@ -17,10 +17,7 @@
     <mat-accordion class=" p-3 m-3">
       <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
-          <mat-panel-title> Procesos </mat-panel-title>
-          <mat-panel-description>
-            Descripción de los procesos
-          </mat-panel-description>
+          <mat-panel-title>  Descripción de los procesos </mat-panel-title>
         </mat-expansion-panel-header>
         <div  *ngFor="let tipoProceso of tipoProcesosVista">
           <p >{{tipoProceso.abreviatura}}  <span class="text-secondary">{{tipoProceso.descripcion}}</span> </p>

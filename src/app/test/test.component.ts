@@ -10,11 +10,11 @@ import { EmailService } from '../services/email.service';
 export class TestComponent implements OnInit {
 
   formData:FormGroup=new FormGroup({
-    Remitente:new FormControl('',[Validators.required,Validators.email]),
-    Destinatario:new FormControl('',[Validators.required,Validators.email]), 
-    Mensaje:new FormControl('',Validators.required),
-    Asunto:new FormControl('',Validators.required),
+    destino:new FormControl('',[Validators.required,Validators.email]),
+    asunto:new FormControl('',Validators.required),
+    mensaje:new FormControl('',Validators.required),
   })
+
 
   constructor(private emailService:EmailService) { }
 
@@ -22,9 +22,9 @@ export class TestComponent implements OnInit {
   }
 
   onClickEnviar(){
-    this.emailService.onSubmit(this.formData.value).subscribe(response=>{
-      console.log(response);
-    });
+    //console.log(this.formData.value);
+    let mensajeStr=JSON.stringify(this.formData.value);
+    this.emailService.onSubmit(mensajeStr);
   }
 
 }

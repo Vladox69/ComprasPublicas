@@ -87,7 +87,9 @@ export class ExcelService {
     for (let index in HEADERS) {
       sheet.getColumn(abecedario[index]).width = tamanio;
     }
-
+    sheet.getColumn('A').width=20;
+    sheet.getColumn('D').width=15
+    sheet.getColumn('K').width=15;
     // Añadir imagen
     const logoId = this._workbook.addImage({
       base64: LOGO,
@@ -129,6 +131,7 @@ export class ExcelService {
       const itemData = comprasPublicas[index];
       const row = rowsToInsert![index];
       row.values = [
+        index+1,
         itemData.createdAt,
         itemData.intpro_DESCRIPCION,
         itemData.intpro_ABREV,
