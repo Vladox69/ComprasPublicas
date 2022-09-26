@@ -133,6 +133,7 @@ export class GraficosComponent implements OnInit {
    */
   obtenerProcesos() {
     let auxComprasPublicas: CompraPublica[] = [];
+    let auxTipoProcesoVista;
     this.detalleGraficos = [];
     for (let i = 0; i < this.tipoProcesos.length; i++) {
       let abreviatura = this.tipoProcesos[i].abreviatura;
@@ -144,9 +145,10 @@ export class GraficosComponent implements OnInit {
         this.detalleGraficos.push(
           new DetalleGrafico(abreviatura, auxComprasPublicas.length, this.crearColorAleatorio())
         );
-        this.comprasPublicasVista =
-          this.comprasPublicasVista.concat(auxComprasPublicas);
-        this.tipoProcesosVista.push(this.tipoProcesos[i]);
+        this.comprasPublicasVista = this.comprasPublicasVista.concat(auxComprasPublicas);
+        auxTipoProcesoVista=this.tipoProcesos[i];
+        auxTipoProcesoVista.descripcion=" - " +auxTipoProcesoVista.descripcion+"  "+auxComprasPublicas.length;
+        this.tipoProcesosVista.push(auxTipoProcesoVista);
       }
     }
   }

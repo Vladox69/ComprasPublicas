@@ -21,7 +21,8 @@
         </mat-expansion-panel-header>
         <div  *ngFor="let tipoProceso of tipoProcesosVista">
           <p >{{tipoProceso.abreviatura}}  <span class="text-secondary">{{tipoProceso.descripcion}}</span> </p>
-      </div>
+        </div>
+        <p>Total de procesos: {{comprasPublicas.length}}</p>
       </mat-expansion-panel>
     </mat-accordion>
   </div>

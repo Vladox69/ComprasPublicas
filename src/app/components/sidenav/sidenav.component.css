@@ -41,4 +41,7 @@
   mat-expansion-panel-header{
     padding: 0px 10px;
   }
-  
+
+  ::ng-deep .mat-expansion-panel-body {
+    padding: 0 0 0 20px !important;
+  }

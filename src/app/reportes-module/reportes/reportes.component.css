@@ -63,3 +63,27 @@ table td {
 .oculto{
     display: none;
 }
+
+.detalles{
+    display: flex;
+    gap: 15px;
+}
+
+.titulo-detalle{
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.tarjeta{
+    width: 350px;
+    height: 350px;
+    margin: 10px;
+    box-shadow: 1px 1px 10px rgb(97, 97, 97);
+    border-radius: 2%;
+
+}
+
+.detalle-compra{
+    padding-left: 10px;
+}

@@ -31,23 +31,20 @@ export class ReportesComponent implements OnInit {
   departamentos: Departamento[] = [];
   tipoProcesos: TipoProceso[] = [];
   resoluciones: Resolucion[] = [];
-  headers: string[] = HEADERS;
-
-  aux: CompraPublica[] = [];
-  posicionRow:string[]=[];
 
   comprasPublicas: CompraPublica[] = [];
   comprasPublicasFilter: CompraPublica[] = [];
   comprasPublicasConteo: CompraPublica[] = [];
-  detalleCompras: DetalleCompra[] = [];
+  comprasPublicasCP:CompraPublica[]=[];
+  comprasPublicasEEASA:CompraPublica[]=[];
 
-  totalDesiertos: number = 0;
-  totalAdjudicados: number = 0;
-  totalCancelados: number = 0;
-  totalBorradores: number = 0;
-  totalNoUtilizados: number = 0;
+  detalleComprasTotal: DetalleCompra[] = [];
+  detalleComprasEEASA: DetalleCompra[]=[];
+  detalleComprasCA:DetalleCompra[]=[];
 
   totalContratado: number = 0;
+  eeasaContratado:number=0;
+  cpContratado:number=0;
 
   selectProceso: string;
   selectDepartamento: string;
@@ -161,49 +158,88 @@ export class ReportesComponent implements OnInit {
       });
       this.dataSource.data=this.comprasPublicas;
     }
-    this.posicionRow=[];
-    for (let iterator in this.comprasPublicas) {
-      this.posicionRow.push(iterator+1);
+
+    //Filtrar por CA y EEASA
+    this.comprasPublicasCP= this.filtrar_tipo_proceso(this.comprasPublicas,'CP');
+    this.comprasPublicasEEASA=this.filtrar_tipo_proceso(this.comprasPublicas,'EEASA');
+
+
+    //Total contratado
+    this.totalContratado = parseFloat(this.calculo_total_contratado(this.comprasPublicas).toFixed(2));
+    let totalContratadoUSD=this.totalContratado.toLocaleString("en-US", {style:"currency", currency:"USD"});
+    this.detalleComprasTotal= this.conteo_cantidad_proceso(this.comprasPublicas,totalContratadoUSD);
+
+
+    //Total eeasa contarado
+    this.eeasaContratado = parseFloat(this.calculo_total_contratado(this.comprasPublicasEEASA).toFixed(2));
+    let eeasaContratadoUSD=this.eeasaContratado.toLocaleString("en-US", {style:"currency", currency:"USD"});
+    this.detalleComprasEEASA= this.conteo_cantidad_proceso(this.comprasPublicasEEASA,eeasaContratadoUSD);
+
+
+    //Total ca contratado
+    this.cpContratado = parseFloat(this.calculo_total_contratado(this.comprasPublicasCP).toFixed(2));
+    let cpContratadoUSD=this.cpContratado.toLocaleString("en-US", {style:"currency", currency:"USD"});
+    this.detalleComprasCA= this.conteo_cantidad_proceso(this.comprasPublicasCP,cpContratadoUSD);
+  }
+
+  filtrar_tipo_proceso(comprasPublicas: CompraPublica[],tipo:string):CompraPublica[] {
+    let auxTipoProceso:TipoProceso[]=[];
+    let auxComprasPublicas:CompraPublica[]=[];
+    let comprasPublicasFiltrado:CompraPublica[]=[];
+    auxTipoProceso=this.tipoProcesos.filter((tipoProceso)=>{
+      return tipoProceso.tipo== tipo;      
+    });
+    
+    for(let index in auxTipoProceso){
+      auxComprasPublicas=comprasPublicas.filter((compra)=>{
+        return compra.intpro_ABREV==auxTipoProceso[index].abreviatura;
+      })
+      comprasPublicasFiltrado=comprasPublicasFiltrado.concat(auxComprasPublicas);
     }
-    this.totalContratado = parseFloat(
-      this.calculo_total_contratado(this.comprasPublicas).toFixed(2)
-    );
-    this.conteo_cantidad_proceso(this.comprasPublicas);
+
+    return comprasPublicasFiltrado;
   }
 
   /**
    * Método para calcular el total de cada resolución y total contratado
    * @param procesoConteo - Array de compras públicas
    */
-  conteo_cantidad_proceso(procesoConteo: CompraPublica[]) {
-    this.detalleCompras = [];
+  conteo_cantidad_proceso(procesoConteo: CompraPublica[],totalContratado:string):DetalleCompra[] {
+    let detalleCompras: DetalleCompra[] = [];
     let auxConteo: CompraPublica[];
-    let auxEnProceso: CompraPublica[];
     auxConteo = procesoConteo;
+
     for (let index in this.resoluciones) {
       procesoConteo = auxConteo.filter((proceso) => {
         return proceso.intres_DETALLE == this.resoluciones[index].detalle;
       });
-      this.detalleCompras.push(
+      detalleCompras.push(
         new DetalleCompra(
           this.resoluciones[index].detalle + ': ',
           procesoConteo.length
         )
       );
     }
-    auxEnProceso = auxConteo.filter((proceso) => {
+
+    procesoConteo = auxConteo.filter((proceso) => {
       return proceso.intres_DETALLE === null;
     });
-    this.detalleCompras.push(
-      new DetalleCompra('EN PROCESO: ', auxEnProceso.length)
+
+    detalleCompras.push(
+      new DetalleCompra('EN PROCESO: ', procesoConteo.length)
     );
-    this.detalleCompras.push(
-      new DetalleCompra('Total de procesos: ', this.comprasPublicas.length)
+    detalleCompras.push(
+      new DetalleCompra('Total de procesos: ', auxConteo.length)
     );
-    this.detalleCompras.push(
-      new DetalleCompra('Total contratado: $ ', this.totalContratado)
+    detalleCompras.push(
+      new DetalleCompra('Total contratado: ', totalContratado)
     );
+
+    return detalleCompras;
   }
+
+
+
 
   /**
    * Método para realizar la suma del total de las compras públicas
@@ -224,7 +260,7 @@ export class ReportesComponent implements OnInit {
    * Método para llamar al servicio de descargar excel
    */
   async downloadExcel() {
-    this.excelService.dowloadExcel(this.detalleCompras, this.comprasPublicas);
+    this.excelService.dowloadExcel(this.detalleComprasTotal, this.comprasPublicas,this.detalleComprasEEASA,this.detalleComprasCA);
   }
 
   /**
@@ -233,4 +269,8 @@ export class ReportesComponent implements OnInit {
   downloadPdf() {
     this.pdfService.exportToPdf('tableExporter', 'detalleExporter');
   }
+
+
+
 }
+

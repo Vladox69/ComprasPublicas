@@ -2,22 +2,13 @@
 <div class="container reportes-componentes">
   <!--Botones -->
   <div class="botones">
-    <button
-      [disabled]="!(comprasPublicas.length > 0)"
-      (click)="openDialog()"
-      class="btn-height btn-excel"
-      mat-raised-button
-    >
+    <button [disabled]="!(comprasPublicas.length > 0)" (click)="openDialog()" class="btn-height btn-excel"
+      mat-raised-button>
       <mat-icon>description</mat-icon>
       Excel
     </button>
-    <button
-      [disabled]="!(comprasPublicas.length > 0)"
-      (click)="downloadPdf()"
-      class="btn-height"
-      mat-raised-button
-      color="warn"
-    >
+    <button [disabled]="!(comprasPublicas.length > 0)" (click)="downloadPdf()" class="btn-height" mat-raised-button
+      color="warn">
       <mat-icon>picture_as_pdf</mat-icon>
       PDF
     </button>
@@ -30,10 +21,7 @@
         <mat-label>Tipo de proceso</mat-label>
         <mat-select [(ngModel)]="selectProceso" (ngModelChange)="filtrar()">
           <mat-option>TODOS</mat-option>
-          <mat-option
-            *ngFor="let tipoProceso of tipoProcesos"
-            [value]="tipoProceso.abreviatura"
-          >
+          <mat-option *ngFor="let tipoProceso of tipoProcesos" [value]="tipoProceso.abreviatura">
             {{ tipoProceso.descripcion }}
           </mat-option>
         </mat-select>
@@ -41,17 +29,10 @@
       <!--Select Departamento -->
       <mat-form-field class="select-departamento" appearance="fill">
         <mat-label>Departamentos</mat-label>
-        <mat-select
-          [(ngModel)]="selectDepartamento"
-          (ngModelChange)="filtrar()"
-        >
+        <mat-select [(ngModel)]="selectDepartamento" (ngModelChange)="filtrar()">
           <mat-option>TODOS</mat-option>
-          <mat-option
-            *ngFor="let departamento of departamentos"
-            [value]="departamento.descripcion"
-          >
-            {{ departamento.descripcion }}</mat-option
-          >
+          <mat-option *ngFor="let departamento of departamentos" [value]="departamento.descripcion">
+            {{ departamento.descripcion }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -65,7 +46,7 @@
       <ng-container matColumnDef="No.">
         <th class="num-cod" mat-header-cell *matHeaderCellDef>No.</th>
         <td class="num-cod" mat-cell *matCellDef="let i=index">
-            {{ i+1 }}
+          {{ i+1 }}
         </td>
         <td class="num-cod" mat-footer-cell *matFooterCellDef></td>
       </ng-container>
@@ -157,7 +138,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    
+
   </div>
 </div>
 
@@ -169,7 +150,7 @@
       <ng-container matColumnDef="No.">
         <th class="num-cod" mat-header-cell *matHeaderCellDef>No.</th>
         <td class="num-cod" mat-cell *matCellDef="let i=index">
-            {{ (paginatorRef.pageIndex * paginatorRef.pageSize) + (i + 1) }}
+          {{ (paginatorRef.pageIndex * paginatorRef.pageSize) + (i + 1) }}
         </td>
         <td class="num-cod" mat-footer-cell *matFooterCellDef></td>
       </ng-container>
@@ -261,22 +242,31 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    <mat-paginator
-      #paginatorRef
-      [pageSizeOptions]="[5,10]"
-      showFirstLastButtons
-    ></mat-paginator>
+    <mat-paginator #paginatorRef [pageSizeOptions]="[5,10]" showFirstLastButtons></mat-paginator>
   </div>
 </div>
-<!--Detalle de compra-->
-<div>
-  <mat-card class="card-detail mat-elevation-z8 m-12 m-3" id="detalleExporter">
-    <mat-card-title>Detalle de las compras</mat-card-title>
-    <hr/>
-    <mat-card-content>
-      <div class="detalle-compra" *ngFor="let detalle of detalleCompras">
-        <p>{{ detalle.detalle }}{{ detalle.cantidad }}</p>
-      </div>
-    </mat-card-content>
-  </mat-card>
+<div class="detalles" id="detalleExporter">
+  <!--Detalle de compra total-->
+  <div class="tarjeta">
+    <h3 class="titulo-detalle">Procesos totalles</h3>
+    <div class="detalle-compra" *ngFor="let detalleTotal of detalleComprasTotal">
+      <p>{{ detalleTotal.detalle }}{{ detalleTotal.cantidad }}</p>
+    </div>
+  </div>
+
+  <!--Detalle de compra CP-->
+  <div class="tarjeta">
+    <h3 class="titulo-detalle">Procesos compras públicas</h3>
+    <div class="detalle-compra" *ngFor="let detalleCA of detalleComprasCA">
+      <p>{{ detalleCA.detalle }}{{ detalleCA.cantidad }}</p>
+    </div>
+  </div>
+  <!--Detalle de compra EEASA-->
+  <div class="tarjeta">
+    <h3 class="titulo-detalle">Proceso EEASA</h3>
+    <div class="detalle-compra" *ngFor="let detalleEEASA of detalleComprasEEASA">
+      <p>{{ detalleEEASA.detalle }}{{ detalleEEASA.cantidad }}</p>
+    </div>
+  </div>
+
 </div>

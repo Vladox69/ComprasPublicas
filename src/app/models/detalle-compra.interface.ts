@@ -1,3 +1,3 @@
 export class DetalleCompra{
-    constructor(public detalle:string,public cantidad:number){}
+    constructor(public detalle:string,public cantidad:any){}
 }
