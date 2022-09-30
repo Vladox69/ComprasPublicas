@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Resolucion } from '../models/resolucion.interface';
 
 @Injectable({
@@ -14,7 +15,7 @@ export class ResolucionesService {
    * @returns - Array de resoluciones
    */
   getResoluciones():Observable<Resolucion[]>{
-    return this.http.get<Resolucion[]>('api/resoluciones');
+    return this.http.get<Resolucion[]>(`${environment.url}/api/resoluciones`);
   }
   
 }

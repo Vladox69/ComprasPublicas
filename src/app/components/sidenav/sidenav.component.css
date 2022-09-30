@@ -14,10 +14,11 @@
     z-index: 2;
   }
   
-  img.eeasa-logo {
-    margin-left: 9px;
-   
+  .example-toolbar{
+    display: flex;
+    justify-content: space-between;
   }
+
 
   h1.title {
     margin-left: 9px;
@@ -44,4 +45,8 @@
 
   ::ng-deep .mat-expansion-panel-body {
     padding: 0 0 0 20px !important;
+  }
+
+  a{
+    color: white;
   }

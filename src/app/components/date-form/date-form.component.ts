@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router, Event, NavigationEnd } from '@angular/router';
+import { Router, Event, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
 
 @Component({
@@ -11,42 +11,39 @@ import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
   styleUrls: ['./date-form.component.css'],
 })
 
+
+
 /**
  * Clase para la creación del componente fecha
  */
 export class DateFormComponent implements OnInit {
-  currentRoute: string;
+
+  @Input() ruta:string=''; 
+
   route: string;
   datePipe = new DatePipe('en-US');
-  minDate;
-  maxDate;
+  minDate:any;
+  maxDate:any;
   formValid: boolean = false;
 
-  constructor(private router: Router,private dialog: MatDialog) {
-
-    //Proceso para saber en que ruta nos encontramos
-    this.currentRoute = 'Home';
-
-    this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationEnd) {
-        this.currentRoute = event.url;
-        if (this.currentRoute == '/reportes') {
-          this.route = '/reportes';
-        } else if (this.currentRoute == '/graficos') {
-          this.route = '/graficos';
-        }
-      }
-    });
-  }
-
-
-  ngOnInit(): void {
-    this.maxDate = this.datePipe.transform(new Date, 'yyyy-MM-dd');
-  }
+  fromDateParams: any;
+  toDateParams: any;
+  
   dateForm = new FormGroup({
     fromDate: new FormControl('',[Validators.required]),
     toDate: new FormControl('',[Validators.required]),
   },);
+
+  constructor(private router: Router,private dialog: MatDialog,private activedRoute: ActivatedRoute) {
+    this.maxDate = this.datePipe.transform(new Date, 'yyyy-MM-dd');
+    this.setValues();
+  }
+
+
+  ngOnInit(): void {
+    
+  }
+  
 
   cargarFechaFinal() {
     this.minDate = this.datePipe.transform(this.dateForm.get('fromDate').value, 'yyyy-MM-dd');
@@ -62,17 +59,17 @@ export class DateFormComponent implements OnInit {
   /**
    * Método que devuelve cual es la ruta actual en caso de recargar la página o caida de internet
    */
-  onClickObtenerResultados() {
+  onClickObtenerResultados(event:any) {
+    event.preventDefault();
     if (!this.calculoEntreFechas()) {
       this.openDialog();
     } else {
 
-      this.route = this.currentRoute.includes('/reportes') ? '/reportes' : '/graficos';
       this.router
-        .navigateByUrl(`${this.route}`, { skipLocationChange: true })
+        .navigateByUrl(`${this.ruta}`, { skipLocationChange: true })
         .then(() =>
           this.router.navigate([
-            `${this.currentRoute}/fechas`,
+            `${this.ruta}/fechas`,
             this.datePipe.transform(this.dateForm.get('fromDate').value, 'yyyy-MM-dd'),
             this.datePipe.transform(this.dateForm.get('toDate').value, 'yyyy-MM-dd'),
           ])
@@ -93,6 +90,15 @@ export class DateFormComponent implements OnInit {
       valido = true;
     }
     return valido;
+  }
+
+  setValues(){
+    this.fromDateParams = this.activedRoute.snapshot.params.fromDate;
+    this.toDateParams = this.activedRoute.snapshot.params.toDate;
+    let fromDate=new Date(`${this.fromDateParams}T00:00:00`);
+    let toDate=new Date(`${this.toDateParams}T00:00:00`);
+    this.dateForm.get('fromDate').setValue(fromDate);
+    this.dateForm.get('toDate').setValue(toDate);
   }
 
 

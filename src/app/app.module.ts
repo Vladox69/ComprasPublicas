@@ -14,9 +14,9 @@ import { ReportesComponent } from './reportes-module/reportes/reportes.component
 import { GraficosComponent } from './graficos-module/graficos/graficos.component';
 import { VacioComponent } from './components/vacio/vacio.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TestComponent } from './test/test.component';
 import { DialogComponent } from './reportes-module/dialog/dialog.component';
 import { DialogErrorComponent } from './components/dialog-error/dialog-error.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
 
 @NgModule({
   entryComponents: [DialogComponent,DialogErrorComponent],
@@ -27,9 +27,9 @@ import { DialogErrorComponent } from './components/dialog-error/dialog-error.com
     ReportesComponent,
     GraficosComponent,
     VacioComponent,
-    TestComponent,
     DialogComponent,
     DialogErrorComponent,
+    HomePageComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { CompraPublica } from '../models/compras-publicas.interface';
 
 @Injectable({
@@ -15,7 +16,7 @@ export class ComprasPublicasService {
    * @returns - Array de comprar públicas
    */
   async getComprasPublicas():Promise<Observable<CompraPublica[]>>{
-    return  this.http.get<CompraPublica[]>('api/reportes');
+    return  this.http.get<CompraPublica[]>(`${environment.url}/api/reportes`);
   }
 
   /**
@@ -25,7 +26,7 @@ export class ComprasPublicasService {
    * @returns - Array de comprar públicas
    */
   async getComprasPublicasByDate(from:any,to:any):Promise<Observable<CompraPublica[]>>{
-    return this.http.get<CompraPublica[]>(`api/reportes/${from}/${to}`);
+    return this.http.get<CompraPublica[]>(`${environment.url}/api/reportes/${from}/${to}`);
   }
 
 }

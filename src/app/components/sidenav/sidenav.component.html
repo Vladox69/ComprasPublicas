@@ -1,16 +1,20 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="shouldRun">
   <mat-toolbar color="primary" class="example-toolbar">
-    <button mat-icon-button (click)="snav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <img class="eeasa-logo" src="https://www.eeasa.com.ec/content/uploads/2020/06/logo-eeasa-label.svg" alt="logo eeasa"
-      height="40">
-    <h1 class="title"></h1>
+      <div >
+        <button mat-icon-button (click)="snav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+      <div >
+       <a href="https://app.eeasa.com.ec/intranet"> <mat-icon>logout</mat-icon></a> 
+      </div>
   </mat-toolbar>
   <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
       fixedTopGap="56">
       <mat-nav-list>
+        <img class="eeasa-logo" src="assets/Logo-EEASA-9.png" alt="logo eeasa"
+        height="40">
         <mat-accordion  mat-list-item  *ngFor="let nav of fillerNav">
           <mat-expansion-panel >
             <mat-expansion-panel-header>
@@ -28,10 +32,7 @@
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
-      <app-date-form></app-date-form>
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
-
-<div *ngIf="!shouldRun">Please open on Stackblitz to see result</div>
