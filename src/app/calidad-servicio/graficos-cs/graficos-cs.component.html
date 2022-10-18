@@ -1,0 +1,152 @@
+<nav class="navbar navbar-light bg-primary ">
+  <p class="text-white m-2">{{ fechaAct }}</p>
+  <p class="text-white m-2">Indicadores por análisis de Alimentador</p>
+</nav>
+<div>
+  <div class="row graficos">
+    <div class="col-10">
+        <!-- Tres gráficas -->
+        <div class="row">
+            <!-- Gráfica de pastel -->
+            <div class="col">
+                <h3>Índices FMIK, Subestaciones PUYO de Enero hasta Agosto 2021</h3>
+                <div id="chart">
+                    <apx-chart
+                      [series]="chartOptions.series"
+                      [chart]="chartOptions.chart"
+                      [labels]="chartOptions.labels"
+                      [responsive]="chartOptions.responsive"
+                    ></apx-chart>
+                  </div>
+            </div>
+            <!-- Gráfica de pastel -->
+            <div class="col">
+                <h3>Índices TTIK, Subestaciones PUYO de Enero hasta Agosto 2021</h3>
+                <div id="chart">
+                    <apx-chart
+                      [series]="chartOptions.series"
+                      [chart]="chartOptions.chart"
+                      [labels]="chartOptions.labels"
+                      [responsive]="chartOptions.responsive"
+                    ></apx-chart>
+                  </div>
+            </div>
+            <!-- Gráfica de barras -->
+            <div class="col">
+                <h3>Indicadores globales de Enero hasta Agosto 2021</h3>
+                <div id="chartBar" class="chatBar1">
+                    <apx-chart
+                      [series]="chartOptionsBar.series"
+                      [chart]="chartOptionsBar.chart"
+                      [dataLabels]="chartOptionsBar.dataLabels"
+                      [plotOptions]="chartOptionsBar.plotOptions"
+                      [yaxis]="chartOptionsBar.yaxis"
+                      [legend]="chartOptionsBar.legend"
+                      [fill]="chartOptionsBar.fill"
+                      [stroke]="chartOptionsBar.stroke"
+                      [tooltip]="chartOptionsBar.tooltip"
+                      [xaxis]="chartOptionsBar.xaxis"
+                    ></apx-chart>
+                  </div>
+            </div>
+        </div>
+        <!-- Grafica de barras sola -->
+        <div class="row">
+            <h2 class="text-center">Indicadores por alimentador, Subestaciones Puyo de Enero hasta Agosto 2021</h2>
+            <div id="chartBar" >
+                <apx-chart
+                  [series]="chartOptionsBar.series"
+                  [chart]="chartOptionsBar.chart"
+                  [dataLabels]="chartOptionsBar.dataLabels"
+                  [plotOptions]="chartOptionsBar.plotOptions"
+                  [yaxis]="chartOptionsBar.yaxis"
+                  [legend]="chartOptionsBar.legend"
+                  [fill]="chartOptionsBar.fill"
+                  [stroke]="chartOptionsBar.stroke"
+                  [tooltip]="chartOptionsBar.tooltip"
+                  [xaxis]="chartOptionsBar.xaxis"
+                ></apx-chart>
+              </div>
+        </div>
+    </div>
+    <div class="col-2">
+        <!-- Alimentador de mayot FMIK -->
+        <div class="row ">
+            <div class="card m-3" >
+                <div class="card-body">
+                  <h5 class="card-title">Alimentador con mayor FMIK histórico</h5>
+                  <p>MERA</p>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p>10.203.256.589,20</p>
+                </div>
+              </div>
+        </div>
+        <!-- Alimentador de mayor TTIK -->
+        <div class="row">
+            <div class="card m-3" >
+                <div class="card-body">
+                  <h5 class="card-title">Alimentador con mayor TTIK histórico</h5>
+                  <p>CAPRICHO</p>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p>10.203.256.589,20</p>
+                </div>
+              </div>
+        </div>
+        <!-- Selects con opciones -->
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Sector</mat-label>
+                <mat-select matNativeControl required>
+                  <mat-option value="volvo">PUYO</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Mes</mat-label>
+                <mat-select matNativeControl required>
+                  <mat-option value="volvo">Agosto</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Año</mat-label>
+                <mat-select matNativeControl required>
+                  <mat-option value="volvo">2021</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <section class="example-section">
+                <mat-checkbox class="example-margin">Acumulador</mat-checkbox>
+              </section>
+        </div>
+        <!-- Tabla de alimentadores -->
+        <div class="row">
+            <div class="card m-3">
+                <table mat-table [dataSource]="dataSource" class="  demo-table">
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="id">
+                      <th mat-header-cell *matHeaderCellDef>Id.</th>
+                      <td mat-cell *matCellDef="let element">{{element.id}}</td>
+                    </ng-container>
+                  
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="alimentador">
+                      <th mat-header-cell *matHeaderCellDef>Alimentador</th>
+                      <td mat-cell *matCellDef="let element">{{element.alimentador}}</td>
+                    </ng-container>
+                  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr
+                        mat-row
+                        (click)="clickedRows.add(row)"
+                        [class.demo-row-is-clicked]="clickedRows.has(row)"
+                        *matRowDef="let row; columns: displayedColumns;"
+                    ></tr>
+                  </table>
+            </div>
+            <button mat-raised-button class="m-3" color="primary">Filtrar</button>
+        </div>
+    </div>
+  </div>
+</div>

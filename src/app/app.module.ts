@@ -17,6 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogComponent } from './reportes-module/dialog/dialog.component';
 import { DialogErrorComponent } from './components/dialog-error/dialog-error.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { GraficosCsComponent } from './calidad-servicio/graficos-cs/graficos-cs.component';
+import { GraficosGeneralesCsComponent } from './calidad-servicio/graficos-generales-cs/graficos-generales-cs.component';
 
 @NgModule({
   entryComponents: [DialogComponent,DialogErrorComponent],
@@ -30,6 +32,8 @@ import { HomePageComponent } from './components/home-page/home-page.component';
     DialogComponent,
     DialogErrorComponent,
     HomePageComponent,
+    GraficosCsComponent,
+    GraficosGeneralesCsComponent,
   ],
   imports: [
     BrowserModule,

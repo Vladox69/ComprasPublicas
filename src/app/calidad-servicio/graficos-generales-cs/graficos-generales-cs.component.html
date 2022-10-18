@@ -1,0 +1,95 @@
+<nav class="navbar navbar-light bg-primary">
+  <p class="text-white m-2">{{ fechaAct }}</p>
+  <p class="text-white m-2">Indicadores generales de la empresa</p>
+</nav>
+<div class="row graficos">
+  <div class="col-4">
+    <!-- Dos graficas -->
+    <div class="row">
+      <!-- Gráfica de pastel -->
+      <div class="col">
+        <h3>Índices FMIK, Subestaciones PUYO de Enero hasta Agosto 2021</h3>
+        <div id="chart">
+          <apx-chart
+            [series]="chartOptions.series"
+            [chart]="chartOptions.chart"
+            [labels]="chartOptions.labels"
+            [responsive]="chartOptions.responsive"
+          ></apx-chart>
+        </div>
+      </div>
+      <!-- Gráfica de pastel -->
+      <div class="col">
+        <h3>Índices TTIK, Subestaciones PUYO de Enero hasta Agosto 2021</h3>
+        <div id="chart">
+          <apx-chart
+            [series]="chartOptions.series"
+            [chart]="chartOptions.chart"
+            [labels]="chartOptions.labels"
+            [responsive]="chartOptions.responsive"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-8">
+    <div class="row">
+      <div class="col">
+        <h3>Indicadores globales de Enero hasta Agosto 2021</h3>
+        <div id="chartBar" class="chatBar1">
+          <apx-chart
+            [series]="chartOptionsBar.series"
+            [chart]="chartOptionsBar.chart"
+            [dataLabels]="chartOptionsBar.dataLabels"
+            [plotOptions]="chartOptionsBar.plotOptions"
+            [yaxis]="chartOptionsBar.yaxis"
+            [legend]="chartOptionsBar.legend"
+            [fill]="chartOptionsBar.fill"
+            [stroke]="chartOptionsBar.stroke"
+            [tooltip]="chartOptionsBar.tooltip"
+            [xaxis]="chartOptionsBar.xaxis"
+          ></apx-chart>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-10">
+            <h3>Indicadores globales de Enero hasta Agosto 2021</h3>
+            <div id="chartBar" class="chatBar1">
+              <apx-chart
+                [series]="chartOptionsBar.series"
+                [chart]="chartOptionsBar.chart"
+                [dataLabels]="chartOptionsBar.dataLabels"
+                [plotOptions]="chartOptionsBar.plotOptions"
+                [yaxis]="chartOptionsBar.yaxis"
+                [legend]="chartOptionsBar.legend"
+                [fill]="chartOptionsBar.fill"
+                [stroke]="chartOptionsBar.stroke"
+                [tooltip]="chartOptionsBar.tooltip"
+                [xaxis]="chartOptionsBar.xaxis"
+              ></apx-chart>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="row">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Mes</mat-label>
+                    <mat-select matNativeControl required>
+                      <mat-option value="volvo">Agosto</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Año</mat-label>
+                    <mat-select matNativeControl required>
+                      <mat-option value="volvo">2021</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <section class="example-section">
+                    <mat-checkbox class="example-margin">Acumulador</mat-checkbox>
+                  </section>
+            </div>
+            <button mat-raised-button class="m-3" color="primary">Filtrar</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

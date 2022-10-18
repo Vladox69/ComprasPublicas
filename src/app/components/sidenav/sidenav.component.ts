@@ -31,6 +31,22 @@ export class SidenavComponent implements OnDestroy {
             icon:'equalizer',
           }
          ]
+       },
+       {
+        name:'Calidad de servicio',
+         icon:'support_agent',
+         children:[
+          {
+            name:'Alimentadores',
+            route:'graficos-cs',
+            icon:'equalizer',
+          },
+          {
+            name:'Generales',
+            route:'graficos-generales-cs',
+            icon:'join_full',
+          }
+         ]
        }
    ]
    
