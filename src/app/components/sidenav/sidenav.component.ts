@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import {MediaMatcher} from '@angular/cdk/layout';
-import { Router } from '@angular/router';
+import { Component, OnDestroy } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-sidenav',
@@ -13,7 +12,8 @@ import { Router } from '@angular/router';
  */
 export class SidenavComponent implements OnDestroy {
 
-  mobileQuery: MediaQueryList;
+
+  
 
   fillerNav=[
        {
@@ -31,35 +31,36 @@ export class SidenavComponent implements OnDestroy {
             icon:'equalizer',
           }
          ]
-       },
-       {
-        name:'Calidad de servicio',
-         icon:'support_agent',
-         children:[
-          {
-            name:'Alimentadores',
-            route:'graficos-cs',
-            icon:'equalizer',
-          },
-          {
-            name:'Generales',
-            route:'graficos-generales-cs',
-            icon:'join_full',
-          }
-         ]
+      //  },
+      //  {
+      //   name:'Calidad de servicio',
+      //    icon:'support_agent',
+      //    children:[
+      //     {
+      //       name:'Alimentadores',
+      //       route:'graficos-cs',
+      //       icon:'equalizer',
+      //     },
+      //     {
+      //       name:'Generales',
+      //       route:'graficos-generales-cs',
+      //       icon:'join_full',
+      //     }
+      //    ]
        }
    ]
    
- 
-   private _mobileQueryListener: () => void;
-   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private router:Router) {
-     this.mobileQuery = media.matchMedia('(max-width: 600px)');
-     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-     this.mobileQuery.addListener(this._mobileQueryListener);
+   options = this._formBuilder.group({
+    bottom: 0,
+    fixed: false,
+    top: 0,
+  });
+
+   constructor(private _formBuilder: FormBuilder) {
+   
     }
  
    ngOnDestroy(): void {
-     this.mobileQuery.removeListener(this._mobileQueryListener);
    }
    
    onClose(){

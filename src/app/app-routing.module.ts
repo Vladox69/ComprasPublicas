@@ -8,7 +8,7 @@ import { ReportesComponent } from './reportes-module/reportes/reportes.component
 
 const routes: Routes = [
   { path: '', redirectTo:'home',pathMatch:'full'},
-  {path:'home',component:HomePageComponent},
+  { path:'home',component:HomePageComponent},
   { path:'reportes',component:ReportesComponent},
   { path:'reportes/fechas/:fromDate/:toDate',component:ReportesComponent},
   { path:'graficos',component:GraficosComponent},
@@ -18,7 +18,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,{useHash:true})],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  url:'http://localhost:7001/redint'
+  url:'https://app.eeasa.com.ec/ReportesIntranetWS'
+  //url:'https://app.eeasa.com.ec/ReportesintranetWS'
 };
 
 /*
