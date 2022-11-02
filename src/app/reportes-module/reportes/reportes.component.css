@@ -43,10 +43,6 @@ table {
     height: 350px;
 }
 
-.container {
-    max-width: 99%;
-}
-
 table {
     width: 100%;
 }
@@ -64,11 +60,6 @@ table td {
     display: none;
 }
 
-.detalles{
-    display: flex;
-    gap: 15px;
-}
-
 .titulo-detalle{
     font-size: 20px;
     font-weight: bold;
@@ -81,9 +72,28 @@ table td {
     margin: 10px;
     box-shadow: 1px 1px 10px rgb(97, 97, 97);
     border-radius: 2%;
-
 }
 
 .detalle-compra{
     padding-left: 10px;
+}
+
+td{
+    font-size: 11px;
+}
+
+th {
+    background: #2472a3;
+    color: white;
+    border: solid 1px #999999;
+    font-size: 11px;
+ }
+
+ table tr:nth-child(even) {
+    background-color: rgb(247, 247, 247);
+}
+
+.list-group-item{
+    font-size: 11px;
+    padding: 4px;
 }

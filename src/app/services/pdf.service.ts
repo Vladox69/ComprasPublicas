@@ -38,11 +38,7 @@ margin-left: 10px;
 table,th,td{
  border-collapse: collapse;
  border: 1px solid black;
-}
-thead {
- background-color:darkgray;
- font-weight: bolder;
- border-color: black;
+ font-size:10px;
 }
 </style>
  </html>`

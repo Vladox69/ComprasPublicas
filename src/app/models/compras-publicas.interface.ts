@@ -16,4 +16,5 @@ export interface CompraPublica{
     intdep_CODIGO:string;
     intdep_DESCRIPCION:string;
     intrp_ANIO:number;
+    apellidos_NOMBRES:string;
 }

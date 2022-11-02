@@ -1,17 +1,17 @@
 <div  class="m-0 row justify-content-center">
+    <div class="p-3 m-2 bg-primary text-white text-center text-uppercase">proceso de compras</div>
     <div class="col-auto p-5 text-center">
         <mat-card class="date-card">
-            <mat-card-title class="text-center">Proceso de compras</mat-card-title>
             <mat-card-subtitle class="text-center mt-1">Filtro por fechas</mat-card-subtitle>
-            <form action="" [formGroup]="dateForm">
+            <form [formGroup]="dateForm">
                 <div class="d-flex justify-content-between">
-                    <mat-form-field>
+                    <mat-form-field class="form-group">
                         <input matInput [matDatepicker]="fromDate" placeholder="Fecha inicial"
                             formControlName="fromDate" [max]="maxDate" (dateChange)="cargarFechaFinal()" />
                         <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
                         <mat-datepicker touchUi #fromDate></mat-datepicker>
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field class="form-group">
                         <input matInput [matDatepicker]="toDate" [min]="minDate" (dateChange)="calculoEntreFechas()"
                         placeholder="Fecha final" formControlName="toDate" />
                         <mat-datepicker-toggle matSuffix [for]="toDate" ></mat-datepicker-toggle>

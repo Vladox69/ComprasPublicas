@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url:'https://app.eeasa.com.ec/ReportesIntranetWS'
+  url:'http://localhost:8080'
   //url:'https://app.eeasa.com.ec/ReportesintranetWS'
 };
 

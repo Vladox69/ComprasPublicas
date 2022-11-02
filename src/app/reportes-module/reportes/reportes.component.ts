@@ -66,6 +66,7 @@ export class ReportesComponent implements OnInit {
     'CONTRAF_NUMERO_CONTRATO',
     'CONTRAF_VALOR_CONTRATO',
     'INTDEP_DESCRIPCION',
+    'APELLIDOS_NOMBRES'
   ];
 
   constructor(
@@ -124,6 +125,8 @@ export class ReportesComponent implements OnInit {
       .then((response: Observable<any>) => {
         response.subscribe((data) => {
           this.comprasPublicas = data;
+          console.log(data);
+          
           this.comprasPublicasFilter = data;
           this.dataSource = new MatTableDataSource<CompraPublica>(this.comprasPublicas);
           this.dataSource.paginator = this.paginator;

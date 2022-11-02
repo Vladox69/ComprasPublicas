@@ -15,7 +15,16 @@
       [grid]="chartOptions.grid"
     ></apx-chart>
   </div>
-  <div >
+  <div class="card border-3">
+    <h5 class="card-header text-white bg-dark">Descripción de los procesos</h5>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item " *ngFor="let tipoProceso of tipoProcesosVista">
+        {{tipoProceso.abreviatura}}  <span class="text-secondary">{{tipoProceso.descripcion}}</span> 
+      </li>
+      <li class="list-group-item ">Total de procesos: {{comprasPublicas.length}}</li>
+    </ul>
+  </div>
+  <!-- <div >
     <mat-accordion class=" p-3 m-3">
       <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
@@ -27,7 +36,7 @@
         <p>Total de procesos: {{comprasPublicas.length}}</p>
       </mat-expansion-panel>
     </mat-accordion>
-  </div>
+  </div> -->
 </div>
 <div class="d-flex justify-content-around">
   <div class="shadow p-3 mb-5 bg-white rounded" id="chartPie">

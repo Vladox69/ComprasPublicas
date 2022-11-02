@@ -2,3 +2,7 @@
     width: 500px;
     height: 220px;
 }
+
+.bg-primary{
+    background-color: #2b84bb !important;
+}
