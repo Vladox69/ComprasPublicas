@@ -1,29 +1,67 @@
-<app-date-form [ruta]='"/graficos"'></app-date-form>
+<app-date-form [ruta]="'/graficos'"></app-date-form>
 
+<div class="row">
+  <div class="col-8">
+    <div class="shadow p-3 m-3 bg-white rounded" id="chart">
+      <h2 class="text-center">Gráfica de barras</h2>
+      <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [dataLabels]="chartOptions.dataLabels"
+        [plotOptions]="chartOptions.plotOptions"
+        [yaxis]="chartOptions.yaxis"
+        [xaxis]="chartOptions.xaxis"
+        [legend]="chartOptions.legend"
+        [colors]="chartOptions.colors"
+        [grid]="chartOptions.grid"
+      ></apx-chart>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card border-3 overflow-auto">
+      <h5 class="card-header text-white bg-dark">
+        Descripción de los procesos
+      </h5>
+      <ul class="list-group list-group-flush">
+        <li
+          class="list-group-item"
+          *ngFor="let tipoProceso of tipoProcesosVista"
+        >
+          {{ tipoProceso.abreviatura }}
+          <span class="text-secondary">{{ tipoProceso.descripcion }}</span>
+        </li>
+        <li class="list-group-item">
+          Total de procesos: {{ comprasPublicas.length }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-4">
+    <div class="shadow p-3 mb-5 bg-white rounded" id="chartPie">
+      <h2 class="text-center">Gráfica de pastel</h2>
+      <apx-chart
+        [series]="chartOptionsPie.series"
+        [chart]="chartOptionsPie.chart"
+        [labels]="chartOptionsPie.labels"
+        [responsive]="chartOptionsPie.responsive"
+      ></apx-chart>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="shadow p-3 mb-5 bg-white rounded" id="chartRadar">
+      <h2 class="text-center">Gráfica de radar</h2>
+      <apx-chart
+        [series]="chartOptionsRadar.series"
+        [chart]="chartOptionsRadar.chart"
+        [xaxis]="chartOptionsRadar.xaxis"
+        [title]="chartOptionsRadar.title"
+      ></apx-chart>
+    </div>
+  </div>
+</div>
 <div class="grid-graficos">
-  <div class=" shadow p-3 m-3 bg-white rounded" id="chart">
-    <h2 class="text-center">Gráfica de barras</h2>
-    <apx-chart
-      [series]="chartOptions.series"
-      [chart]="chartOptions.chart"
-      [dataLabels]="chartOptions.dataLabels"
-      [plotOptions]="chartOptions.plotOptions"
-      [yaxis]="chartOptions.yaxis"
-      [xaxis]="chartOptions.xaxis"
-      [legend]="chartOptions.legend"
-      [colors]="chartOptions.colors"
-      [grid]="chartOptions.grid"
-    ></apx-chart>
-  </div>
-  <div class="card border-3">
-    <h5 class="card-header text-white bg-dark">Descripción de los procesos</h5>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item " *ngFor="let tipoProceso of tipoProcesosVista">
-        {{tipoProceso.abreviatura}}  <span class="text-secondary">{{tipoProceso.descripcion}}</span> 
-      </li>
-      <li class="list-group-item ">Total de procesos: {{comprasPublicas.length}}</li>
-    </ul>
-  </div>
   <!-- <div >
     <mat-accordion class=" p-3 m-3">
       <mat-expansion-panel hideToggle>
@@ -37,25 +75,4 @@
       </mat-expansion-panel>
     </mat-accordion>
   </div> -->
-</div>
-<div class="d-flex justify-content-around">
-  <div class="shadow p-3 mb-5 bg-white rounded" id="chartPie">
-    <h2 class="text-center">Gráfica de pastel</h2>
-    <apx-chart
-      [series]="chartOptionsPie.series"
-      [chart]="chartOptionsPie.chart"
-      [labels]="chartOptionsPie.labels"
-      [responsive]="chartOptionsPie.responsive"
-    ></apx-chart>
-  </div>
-
-  <div class="shadow p-3 mb-5 bg-white rounded" id="chartRadar">
-    <h2 class="text-center">Gráfica de radar</h2>
-    <apx-chart
-      [series]="chartOptionsRadar.series"
-      [chart]="chartOptionsRadar.chart"
-      [xaxis]="chartOptionsRadar.xaxis"
-      [title]="chartOptionsRadar.title"
-    ></apx-chart>
-  </div>
 </div>

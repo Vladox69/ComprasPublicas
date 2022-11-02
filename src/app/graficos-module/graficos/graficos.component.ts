@@ -194,12 +194,12 @@ export class GraficosComponent implements OnInit {
       colors: this.colors,
       plotOptions: {
         bar: {
-          columnWidth: '45%',
+          columnWidth: '100%',
           distributed: true,
         },
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
       },
       legend: {
         show: false,
@@ -212,7 +212,7 @@ export class GraficosComponent implements OnInit {
         labels: {
           style: {
             colors: this.colors,
-            fontSize: '12px',
+            fontSize: '10px',
           },
         },
       },
