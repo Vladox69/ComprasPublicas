@@ -1,9 +1,21 @@
 <app-date-form [ruta]="'/graficos'"></app-date-form>
+<mat-form-field class="select-proceso" appearance="fill">
+  <mat-label>Tipo de proceso</mat-label>
+  <mat-select [(ngModel)]="selectProceso" (ngModelChange)="filtrarProceso()">
+    <mat-option>TODOS</mat-option>
+    <mat-option
+      *ngFor="let tipoProceso of tipoProcesosSelect"
+      [value]="tipoProceso.abreviatura"
+    >
+      {{ tipoProceso.descripcion }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 
 <div class="row">
   <div class="col-8">
     <div class="shadow p-3 m-3 bg-white rounded" id="chart">
-      <h2 class="text-center">Gráfica de barras</h2>
+      <h2 class="text-center">Cantidad procesos SERCOP</h2>
       <apx-chart
         [series]="chartOptions.series"
         [chart]="chartOptions.chart"
@@ -15,6 +27,33 @@
         [colors]="chartOptions.colors"
         [grid]="chartOptions.grid"
       ></apx-chart>
+    </div>
+    <div class="shadow p-3 m-3 bg-white rounded" id="chartArea">
+      <div *ngIf="selectProceso == undefined; then todos; else proceso"></div>
+      <ng-template #todos>
+        <h2 class="text-center">Variación de procesos SERCOP</h2>
+        <apx-chart
+          [series]="chartOptionsArea.series"
+          [chart]="chartOptionsArea.chart"
+          [xaxis]="chartOptionsArea.xaxis"
+          [stroke]="chartOptionsArea.stroke"
+          [tooltip]="chartOptionsArea.tooltip"
+          [dataLabels]="chartOptionsArea.dataLabels"
+        ></apx-chart>
+      </ng-template>
+      <ng-template #proceso>
+        <h2 class="text-center">Variación de proceso {{selectProceso}} SERCOP</h2>
+        <div  id="chartAreaProceso">
+          <apx-chart
+            [series]="chartOptionsAreaProceso.series"
+            [chart]="chartOptionsAreaProceso.chart"
+            [xaxis]="chartOptionsAreaProceso.xaxis"
+            [stroke]="chartOptionsAreaProceso.stroke"
+            [tooltip]="chartOptionsAreaProceso.tooltip"
+            [dataLabels]="chartOptionsAreaProceso.dataLabels"
+          ></apx-chart>
+        </div>
+      </ng-template>
     </div>
   </div>
   <div class="col-4">
@@ -35,12 +74,8 @@
         </li>
       </ul>
     </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-4">
     <div class="shadow p-3 mb-5 bg-white rounded" id="chartPie">
-      <h2 class="text-center">Gráfica de pastel</h2>
+      <h2 class="text-center">Porcentaje procesos SERCOP</h2>
       <apx-chart
         [series]="chartOptionsPie.series"
         [chart]="chartOptionsPie.chart"
@@ -49,30 +84,4 @@
       ></apx-chart>
     </div>
   </div>
-  <div class="col-4">
-    <div class="shadow p-3 mb-5 bg-white rounded" id="chartRadar">
-      <h2 class="text-center">Gráfica de radar</h2>
-      <apx-chart
-        [series]="chartOptionsRadar.series"
-        [chart]="chartOptionsRadar.chart"
-        [xaxis]="chartOptionsRadar.xaxis"
-        [title]="chartOptionsRadar.title"
-      ></apx-chart>
-    </div>
-  </div>
-</div>
-<div class="grid-graficos">
-  <!-- <div >
-    <mat-accordion class=" p-3 m-3">
-      <mat-expansion-panel hideToggle>
-        <mat-expansion-panel-header>
-          <mat-panel-title>  Descripción de los procesos </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div  *ngFor="let tipoProceso of tipoProcesosVista">
-          <p >{{tipoProceso.abreviatura}}  <span class="text-secondary">{{tipoProceso.descripcion}}</span> </p>
-        </div>
-        <p>Total de procesos: {{comprasPublicas.length}}</p>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div> -->
 </div>

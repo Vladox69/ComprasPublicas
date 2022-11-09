@@ -162,6 +162,7 @@ export class ExcelService {
         itemData.intrp_ANIO,
         itemData.contraf_VALOR_CONTRATO,
         itemData.intdep_DESCRIPCION,
+        itemData.apellidos_NOMBRES
       ];
     }
     //Dar formato de tabla y estilos al texto

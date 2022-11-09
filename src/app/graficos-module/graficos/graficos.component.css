@@ -21,6 +21,10 @@
   grid-template-columns: 75% 25%;
 }
 
+.select-proceso {
+  width: 525px;
+}
+
 .card{
   max-height: 445px;
 }

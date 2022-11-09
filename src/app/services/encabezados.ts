@@ -12,4 +12,5 @@ export const HEADERS:string[]=[
       'AÑO',
       'VALOR CONTRATADO',
       'DEPARTAMENTO',
+      'RESPONSABLE'
 ]

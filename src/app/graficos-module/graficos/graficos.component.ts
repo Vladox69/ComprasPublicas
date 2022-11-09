@@ -11,7 +11,9 @@ import {
   ApexGrid,
   ApexNonAxisChartSeries,
   ApexResponsive,
-  ApexTitleSubtitle
+  ApexTitleSubtitle,
+  ApexTooltip,
+  ApexStroke,
 } from 'ng-apexcharts';
 import { CompraPublica } from 'src/app/models/compras-publicas.interface';
 import { DetalleGrafico } from 'src/app/models/detalle-graficos.interface';
@@ -59,30 +61,73 @@ export type ChartOptionsRadar = {
   xaxis: ApexXAxis;
 };
 
+export type ChartOptionsArea = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  stroke: ApexStroke;
+  tooltip: ApexTooltip;
+  dataLabels: ApexDataLabels;
+};
+
+export type ChartOptionsAreaProceso = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  stroke: ApexStroke;
+  tooltip: ApexTooltip;
+  dataLabels: ApexDataLabels;
+};
+
 @Component({
   selector: 'app-graficos',
   templateUrl: './graficos.component.html',
   styleUrls: ['./graficos.component.css'],
 })
 export class GraficosComponent implements OnInit {
-
   @ViewChild('chart') chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
 
   @ViewChild('chartPie') chartPie: ChartComponent;
   public chartOptionsPie: Partial<ChartOptionsPie>;
 
-  @ViewChild("chartRadar") chartRadar: ChartComponent;
+  @ViewChild('chartRadar') chartRadar: ChartComponent;
   public chartOptionsRadar: Partial<ChartOptionsRadar>;
+
+  @ViewChild('chartArea') chartArea: ChartComponent;
+  public chartOptionsArea: Partial<ChartOptionsArea>;
+
+  @ViewChild('chartOptionsAreaProceso') chartAreaProceso: ChartComponent;
+  public chartOptionsAreaProceso: Partial<ChartOptionsAreaProceso>;
 
   tipoProcesos: TipoProceso[] = [];
   tipoProcesosVista: TipoProceso[] = [];
+  tipoProcesosSelect: TipoProceso[] = [];
   comprasPublicas: CompraPublica[] = [];
+  comprasPublicasFilter: CompraPublica[] = [];
   comprasPublicasVista: CompraPublica[] = [];
   detalleGraficos: DetalleGrafico[] = [];
 
+  fechas: Date[] = [];
   fromDate: any;
   toDate: any;
+  meses: any = [
+    { id: 0, mes: 'Enero', cantidad: 0 },
+    { id: 1, mes: 'Febrero', cantidad: 0 },
+    { id: 2, mes: 'Marzo', cantidad: 0 },
+    { id: 3, mes: 'Abril', cantidad: 0 },
+    { id: 4, mes: 'Mayo', cantidad: 0 },
+    { id: 5, mes: 'Junio', cantidad: 0 },
+    { id: 6, mes: 'Julio', cantidad: 0 },
+    { id: 7, mes: 'Agosto', cantidad: 0 },
+    { id: 8, mes: 'Septiembre', cantidad: 0 },
+    { id: 9, mes: 'Octubre', cantidad: 0 },
+    { id: 10, mes: 'Noviembre', cantidad: 0 },
+    { id: 11, mes: 'Diciembre', cantidad: 0 },
+  ];
+  categoriasPorProceso: any = [];
+
+  selectProceso: string;
 
   datos: number[] = [0];
   categories: string[] = ['#008FFB'];
@@ -96,11 +141,10 @@ export class GraficosComponent implements OnInit {
     this.fromDate = this.activedRoute.snapshot.params.fromDate;
     this.toDate = this.activedRoute.snapshot.params.toDate;
     this.crearGrafico();
-    
   }
 
-  ngOnInit(): void { 
-    if(this.fromDate!=null){
+  ngOnInit(): void {
+    if (this.fromDate != null) {
       this.getDatos();
     }
   }
@@ -110,26 +154,32 @@ export class GraficosComponent implements OnInit {
    */
 
   async getDatos() {
-    this.tipoProcesoService.getTipoProcesos().then(response=>{
+    this.crearCategoriaParaVariacion();
+
+    this.tipoProcesoService.getTipoProcesos().then((response) => {
       response.subscribe((data) => {
         this.tipoProcesos = data;
-      })
+      });
+      response.subscribe((data) => {
+        this.tipoProcesosSelect = data;
+      });
     });
 
     await this.comprasPublicasService
       .getComprasPublicasByDate(this.fromDate, this.toDate)
-      .then(response=>{
+      .then((response) => {
         response.subscribe((data) => {
           this.comprasPublicas = data;
+          this.comprasPublicasFilter = data;
           this.obtenerProcesos();
           this.dividirCaracteristicas();
         });
-      })
+      });
   }
 
   /**
    * Método para obtener únicamente los tipos de procesos que se encuentren en los datos de compras públicas extraidos entre una fecha inicial y final
-   * 
+   *
    */
   obtenerProcesos() {
     let auxComprasPublicas: CompraPublica[] = [];
@@ -143,16 +193,24 @@ export class GraficosComponent implements OnInit {
 
       if (auxComprasPublicas.length > 0) {
         this.detalleGraficos.push(
-          new DetalleGrafico(abreviatura, auxComprasPublicas.length, this.crearColorAleatorio())
+          new DetalleGrafico(
+            abreviatura,
+            auxComprasPublicas.length,
+            this.crearColorAleatorio()
+          )
         );
-        this.comprasPublicasVista = this.comprasPublicasVista.concat(auxComprasPublicas);
-        auxTipoProcesoVista=this.tipoProcesos[i];
-        auxTipoProcesoVista.descripcion=" - " +auxTipoProcesoVista.descripcion+"  "+auxComprasPublicas.length;
+        this.comprasPublicasVista =
+          this.comprasPublicasVista.concat(auxComprasPublicas);
+        auxTipoProcesoVista = this.tipoProcesos[i];
+        auxTipoProcesoVista.descripcion =
+          ' - ' +
+          auxTipoProcesoVista.descripcion +
+          '  ' +
+          auxComprasPublicas.length;
         this.tipoProcesosVista.push(auxTipoProcesoVista);
       }
     }
   }
-
 
   /**
    * Método para dividir en arreglos diferentes los tipos de procesos
@@ -172,7 +230,6 @@ export class GraficosComponent implements OnInit {
     this.crearGrafico();
   }
 
-
   /**
    * Método para asignar variables datos, categories, colors a cada uno de los gráficos
    */
@@ -188,13 +245,13 @@ export class GraficosComponent implements OnInit {
         height: 350,
         type: 'bar',
         events: {
-          click: function (chart, w, e) { },
+          click: function (chart, w, e) {},
         },
       },
       colors: this.colors,
       plotOptions: {
         bar: {
-          columnWidth: '100%',
+          columnWidth: '50%',
           distributed: true,
         },
       },
@@ -222,7 +279,7 @@ export class GraficosComponent implements OnInit {
       series: this.datos,
       chart: {
         width: 380,
-        type: "pie"
+        type: 'pie',
       },
       labels: this.categories,
       responsive: [
@@ -230,48 +287,195 @@ export class GraficosComponent implements OnInit {
           breakpoint: 480,
           options: {
             chart: {
-              width: 200
+              width: 200,
             },
             legend: {
-              position: "bottom"
-            }
-          }
-        }
-      ]
+              position: 'bottom',
+            },
+          },
+        },
+      ],
     };
 
-    this.chartOptionsRadar = {
+    this.chartOptionsArea = {
       series: [
         {
-          name: "Series 1",
-          data: this.datos
-        }
+          name: 'Cantidad',
+          data: this.datos,
+        },
       ],
       chart: {
         height: 350,
-        type: "radar"
+        type: 'area',
       },
-      title: {
-        text: "",
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: 'smooth',
       },
       xaxis: {
-        categories: this.categories
-      }
+        categories: this.categories,
+        labels: {
+          style: {
+            colors: this.colors,
+            fontSize: '10px',
+          },
+        },
+      },
+      tooltip: {
+        x: {
+          show: true,
+        },
+      },
     };
-
+    // this.chartOptionsAreaProceso = {
+    //   series: [
+    //     {
+    //       name: "series1",
+    //       data: [31, 40, 28, 51, 42, 109, 100]
+    //     }
+    //   ],
+    //   chart: {
+    //     height: 350,
+    //     type: "area"
+    //   },
+    //   dataLabels: {
+    //     enabled: false
+    //   },
+    //   stroke: {
+    //     curve: "smooth"
+    //   },
+    //   xaxis: {
+    //     type: "datetime",
+    //     categories: [
+    //       "2018-09-19T00:00:00.000Z",
+    //       "2018-09-19T01:30:00.000Z",
+    //       "2018-09-19T02:30:00.000Z",
+    //       "2018-09-19T03:30:00.000Z",
+    //       "2018-09-19T04:30:00.000Z",
+    //       "2018-09-19T05:30:00.000Z",
+    //       "2018-09-19T06:30:00.000Z"
+    //     ]
+    //   },
+    //   tooltip: {
+    //     x: {
+    //       format: "dd/MM/yy HH:mm"
+    //     }
+    //   }
+    // };
   }
 
   /**
    * Método para generar colores de manera aleatoria
    * @returns Un string con la cadena de color en hexadecimal
    */
-  crearColorAleatorio():string{
-    const hexadecimal = new Array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
+  crearColorAleatorio(): string {
+    const hexadecimal = new Array(
+      '0',
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      'A',
+      'B',
+      'C',
+      'D',
+      'E',
+      'F'
+    );
     let colorAleatorio = '#';
     for (let i = 0; i < 6; i++) {
-      let posarray = Math.trunc(Math.random()*hexadecimal.length);
+      let posarray = Math.trunc(Math.random() * hexadecimal.length);
       colorAleatorio += hexadecimal[posarray];
     }
     return colorAleatorio;
+  }
+
+  filtrarProceso() {
+    let proceso_cod = this.selectProceso;
+    this.comprasPublicasFilter = this.comprasPublicas.filter(function (
+      proceso
+    ) {
+      return proceso.intpro_ABREV == proceso_cod;
+    });
+
+    this.fechas = this.comprasPublicasFilter.map(function (proceso) {
+      return new Date(`${proceso.createdAt}T00:00:00`);
+    });
+
+    for (let indice in this.categoriasPorProceso) {
+      let aux = this.fechas.filter((fecha) => {
+        return fecha.getMonth() == this.categoriasPorProceso[indice].id;
+      });
+      this.categoriasPorProceso[indice].cantidad = aux.length;
+    }
+
+    let meses = this.categoriasPorProceso.map((obj) => {
+      return obj.mes;
+    });
+    let cantidad = this.categoriasPorProceso.map((obj) => {
+      return obj.cantidad;
+    });
+
+    this.chartOptionsAreaProceso = {
+      series: [
+        {
+          name: proceso_cod,
+          data: cantidad,
+        },
+      ],
+      chart: {
+        height: 350,
+        type: 'area',
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: 'smooth',
+      },
+      xaxis: {
+        categories: meses,
+      },
+      tooltip: {
+        x: {
+          format: 'dd/MM/yy HH:mm',
+        },
+      },
+    };
+  }
+
+  crearCategoriaParaVariacion() {
+    let fromDate = new Date(`${this.fromDate}T00:00:00`);
+    let toDate = new Date(`${this.toDate}T00:00:00`);
+    let from = fromDate.getMonth();
+    let to = toDate.getMonth();
+    this.categoriasPorProceso = [];
+
+    if (from > to) {
+      let i = from;
+      do {
+        let mes = { ...this.meses[i] };
+        this.categoriasPorProceso = [...this.categoriasPorProceso, mes];
+        if (i == 11) {
+          i = 0;
+        } else {
+          i = i + 1;
+        }
+      } while (i != to);
+      let mes = { ...this.meses[to] };
+      this.categoriasPorProceso = [...this.categoriasPorProceso, mes];
+    } else {
+      for (let i = from; i <= to; i++) {
+        let mes = { ...this.meses[i] };
+        this.categoriasPorProceso = [...this.categoriasPorProceso, mes];
+      }
+    }
   }
 }

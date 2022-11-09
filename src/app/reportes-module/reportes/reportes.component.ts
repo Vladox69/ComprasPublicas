@@ -11,7 +11,6 @@ import { ExcelService } from 'src/app/services/excel.service';
 import { PdfService } from 'src/app/services/pdf.service';
 import { DetalleCompra } from 'src/app/models/detalle-compra.interface';
 import { Resolucion } from 'src/app/models/resolucion.interface';
-import { HEADERS } from 'src/app/services/encabezados';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
@@ -53,7 +52,7 @@ export class ReportesComponent implements OnInit {
   toDate: any;
 
   displayedColumns: string[] = [
-    'No.',
+    'No',
     'INTRP_FECHA_PUBLICACION',
     'INTPRO_DESCRIPCION',
     'INTPRO_ABREV',
@@ -125,8 +124,6 @@ export class ReportesComponent implements OnInit {
       .then((response: Observable<any>) => {
         response.subscribe((data) => {
           this.comprasPublicas = data;
-          console.log(data);
-          
           this.comprasPublicasFilter = data;
           this.dataSource = new MatTableDataSource<CompraPublica>(this.comprasPublicas);
           this.dataSource.paginator = this.paginator;

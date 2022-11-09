@@ -54,8 +54,13 @@ table td {
 }
 
 .num-cod{
-    width: 75px;
+    width: 50px !important;
 }
+
+.num-anio{
+    width: 50px !important;
+}
+
 .oculto{
     display: none;
 }
@@ -96,4 +101,9 @@ th {
 .list-group-item{
     font-size: 11px;
     padding: 4px;
+}
+
+.no{
+    width: 5px;
+    background-color: black;
 }

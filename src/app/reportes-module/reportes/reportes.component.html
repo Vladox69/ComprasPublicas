@@ -40,17 +40,16 @@
   </div>
 </div>
 
-<!-- Tabla a pdf -->
+<!-- Tabla a pdf, esta tabla genera el pdf con los datos, en caso de cambios, cambiar en ambas tablas -->
 <div class="container mat-elevation-z2 m-12 m-2 oculto">
   <div class="table-container">
     <table mat-table [dataSource]="comprasPublicas" id="tableExporter">
       <!--ÍNDICE -->
-      <ng-container matColumnDef="No.">
+      <ng-container matColumnDef="No">
         <th class="num-cod" mat-header-cell *matHeaderCellDef>No.</th>
         <td class="num-cod" mat-cell *matCellDef="let i=index">
           {{ i+1 }}
         </td>
-        <td class="num-cod" mat-footer-cell *matFooterCellDef></td>
       </ng-container>
       <!--FECHA DE PUBLICACIÓN -->
       <ng-container matColumnDef="INTRP_FECHA_PUBLICACION">
@@ -60,9 +59,6 @@
         <td mat-cell *matCellDef="let element">
           {{ element.createdAt }}
         </td>
-        <td class="td-valorContratado" mat-footer-cell *matFooterCellDef>
-          Valor Total Contratado: {{ total_contratado }}
-        </td>
       </ng-container>
       <!--PROCESO DESCRIPCION -->
       <ng-container matColumnDef="INTPRO_DESCRIPCION">
@@ -70,7 +66,6 @@
         <td mat-cell *matCellDef="let element">
           {{ element.intpro_DESCRIPCION }}
         </td>
-        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
       <!--ABREVIATURA DE PROCESO -->
       <ng-container matColumnDef="INTPRO_ABREV">
@@ -151,13 +146,13 @@
   </div>
 </div>
 
-<!--Tabla -->
+<!--Tabla que se muestra en la vista -->
 <div class="container mat-elevation-z2 m-12 m-2">
   <div class="table-container">
-    <table mat-table [dataSource]="dataSource">
+    <table class="text-center" mat-table [dataSource]="dataSource">
       <!--ÍNDICE -->
-      <ng-container matColumnDef="No.">
-        <th class="num-cod" mat-header-cell *matHeaderCellDef>No.</th>
+      <ng-container matColumnDef="No" >
+        <th class="num-cod " mat-header-cell *matHeaderCellDef>No.</th>
         <td class="num-cod" mat-cell *matCellDef="let i=index">
           {{ (paginatorRef.pageIndex * paginatorRef.pageSize) + (i + 1) }}
         </td>
@@ -165,14 +160,11 @@
       </ng-container>
       <!--FECHA DE PUBLICACIÓN -->
       <ng-container matColumnDef="INTRP_FECHA_PUBLICACION">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <th  mat-header-cell *matHeaderCellDef mat-sort-header>
           FECHA DE PUBLICACIÓN
         </th>
         <td mat-cell *matCellDef="let element">
           {{ element.createdAt }}
-        </td>
-        <td class="td-valorContratado" mat-footer-cell *matFooterCellDef>
-          Valor Total Contratado: {{ total_contratado }}
         </td>
       </ng-container>
       <!--PROCESO DESCRIPCION -->
@@ -181,7 +173,6 @@
         <td mat-cell *matCellDef="let element">
           {{ element.intpro_DESCRIPCION }}
         </td>
-        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
       <!--ABREVIATURA DE PROCESO -->
       <ng-container matColumnDef="INTPRO_ABREV">
@@ -234,8 +225,8 @@
       </ng-container>
       <!--AÑO -->
       <ng-container matColumnDef="CONTRAF_NUMERO_CONTRATO">
-        <th mat-header-cell *matHeaderCellDef>AÑO</th>
-        <td mat-cell *matCellDef="let element">
+        <th class="num-anio text-center"  mat-header-cell *matHeaderCellDef>AÑO</th>
+        <td class="num-anio text-center" mat-cell *matCellDef="let element">
           {{ element.intrp_ANIO }}
         </td>
       </ng-container>
