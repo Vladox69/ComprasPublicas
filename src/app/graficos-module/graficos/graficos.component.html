@@ -1,20 +1,24 @@
 <app-date-form [ruta]="'/graficos'"></app-date-form>
-<mat-form-field class="select-proceso" appearance="fill">
-  <mat-label>Tipo de proceso</mat-label>
-  <mat-select [(ngModel)]="selectProceso" (ngModelChange)="filtrarProceso()">
-    <mat-option>TODOS</mat-option>
-    <mat-option
-      *ngFor="let tipoProceso of tipoProcesosSelect"
-      [value]="tipoProceso.abreviatura"
-    >
-      {{ tipoProceso.descripcion }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<div class="row ">
+  <div class="col-md-4">
+    <mat-form-field class="select-proceso " appearance="fill">
+      <mat-label>Tipo de proceso</mat-label>
+      <mat-select [(ngModel)]="selectProceso" (ngModelChange)="filtrarProceso()">
+        <mat-option>TODOS</mat-option>
+        <mat-option
+          *ngFor="let tipoProceso of tipoProcesosSelect"
+          [value]="tipoProceso.abreviatura"
+        >
+          {{ tipoProceso.descripcion }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
 
 <div class="row">
-  <div class="col-8">
-    <div class="shadow p-3 m-3 bg-white rounded" id="chart">
+  <div class="col-md-8">
+    <div class="shadow p-3  bg-white rounded" id="chart">
       <h2 class="text-center">Cantidad procesos SERCOP</h2>
       <apx-chart
         [series]="chartOptions.series"
@@ -28,7 +32,7 @@
         [grid]="chartOptions.grid"
       ></apx-chart>
     </div>
-    <div class="shadow p-3 m-3 bg-white rounded" id="chartArea">
+    <div class="shadow p-3  bg-white rounded" id="chartArea">
       <div *ngIf="selectProceso == undefined; then todos; else proceso"></div>
       <ng-template #todos>
         <h2 class="text-center">Variación de procesos SERCOP</h2>
@@ -56,7 +60,7 @@
       </ng-template>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-md-4 mt-2">
     <div class="card border-3 overflow-auto">
       <h5 class="card-header text-white bg-dark">
         Descripción de los procesos
@@ -76,7 +80,7 @@
     </div>
     <div class="shadow p-3 mb-5 bg-white rounded" id="chartPie">
       <h2 class="text-center">Porcentaje procesos SERCOP</h2>
-      <apx-chart
+      <apx-chart class="w-100"
         [series]="chartOptionsPie.series"
         [chart]="chartOptionsPie.chart"
         [labels]="chartOptionsPie.labels"

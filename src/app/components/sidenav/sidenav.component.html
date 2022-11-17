@@ -1,8 +1,17 @@
 <ng-container *ngIf="shouldRun">
   <mat-toolbar color="primary" class="example-header">
-    <div></div>
     <div>
-      <a href="https://app.eeasa.com.ec/intranet">
+      <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+        <mat-icon *ngIf="!sidenav.opened">
+            menu
+        </mat-icon>
+        <mat-icon *ngIf="sidenav.opened">
+            close
+        </mat-icon>
+    </button>
+    </div>
+    <div>
+      <a href="https://app.eeasa.com.ec/intranet/#inicio">
         <mat-icon >logout</mat-icon></a>
     </div>
   </mat-toolbar>
@@ -17,8 +26,10 @@
       [fixedBottomGap]="options.value.bottom"
     >
     <mat-nav-list>
-      <img class="eeasa-logo" src="assets/Logo-EEASA-9.png" alt="logo eeasa"
-      height="40">
+      <div class="text-center">
+        <img class="eeasa-logo" src="assets/Logo-EEASA-8.png" alt="logo eeasa"
+      height="80" >
+      </div>
       <mat-accordion  mat-list-item  *ngFor="let nav of fillerNav">
         <mat-expansion-panel >
           <mat-expansion-panel-header>

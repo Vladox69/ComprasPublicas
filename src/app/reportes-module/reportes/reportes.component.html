@@ -1,9 +1,8 @@
 <app-date-form [ruta]='"/reportes"' ></app-date-form>
 <!--Botones y filtros -->
-<div class="container reportes-componentes">
-  <!--Botones -->
-  <div class="botones">
-    <button [disabled]="!(comprasPublicas.length > 0)" (click)="openDialog()" class="btn-height btn-excel"
+<div class="row m-2">
+  <div class="col-md-3 mt-2">
+    <button  [disabled]="!(comprasPublicas.length > 0)" (click)="openDialog()" class="btn-height btn-excel mx-2"
       mat-raised-button>
       <mat-icon>description</mat-icon>
       Excel
@@ -14,35 +13,37 @@
       PDF
     </button>
   </div>
-  <!--Selects -->
-  <div class="d-flex align-items-center">
-    <div class="formulario-filtros" action="">
-      <!--Select Proceso -->
-      <mat-form-field class="select-proceso" appearance="fill">
-        <mat-label>Tipo de proceso</mat-label>
-        <mat-select [(ngModel)]="selectProceso" (ngModelChange)="filtrar()">
-          <mat-option>TODOS</mat-option>
-          <mat-option *ngFor="let tipoProceso of tipoProcesos" [value]="tipoProceso.abreviatura">
-            {{ tipoProceso.descripcion }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <!--Select Departamento -->
-      <mat-form-field class="select-departamento" appearance="fill">
-        <mat-label>Departamentos</mat-label>
-        <mat-select [(ngModel)]="selectDepartamento" (ngModelChange)="filtrar()">
-          <mat-option>TODOS</mat-option>
-          <mat-option *ngFor="let departamento of departamentos" [value]="departamento.descripcion">
-            {{ departamento.descripcion }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+  <div class="col-md-9 mt-2">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field class="select-proceso" appearance="fill">
+          <mat-label>Tipo de proceso</mat-label>
+          <mat-select [(ngModel)]="selectProceso" (ngModelChange)="filtrar()">
+            <mat-option>TODOS</mat-option>
+            <mat-option *ngFor="let tipoProceso of tipoProcesos" [value]="tipoProceso.abreviatura">
+              {{ tipoProceso.descripcion }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field class="select-departamento" appearance="fill">
+          <mat-label>Departamentos</mat-label>
+          <mat-select [(ngModel)]="selectDepartamento" (ngModelChange)="filtrar()">
+            <mat-option>TODOS</mat-option>
+            <mat-option *ngFor="let departamento of departamentos" [value]="departamento.descripcion">
+              {{ departamento.descripcion }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
+    
   </div>
 </div>
 
 <!-- Tabla a pdf, esta tabla genera el pdf con los datos, en caso de cambios, cambiar en ambas tablas -->
 <div class="container mat-elevation-z2 m-12 m-2 oculto">
-  <div class="table-container">
+  <div class="">
     <table mat-table [dataSource]="comprasPublicas" id="tableExporter">
       <!--ÍNDICE -->
       <ng-container matColumnDef="No">
@@ -147,8 +148,7 @@
 </div>
 
 <!--Tabla que se muestra en la vista -->
-<div class="container mat-elevation-z2 m-12 m-2">
-  <div class="table-container">
+<div class="container mat-elevation-z2 m-12 m-2 ">
     <table class="text-center" mat-table [dataSource]="dataSource">
       <!--ÍNDICE -->
       <ng-container matColumnDef="No" >
@@ -250,11 +250,10 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
     <mat-paginator #paginatorRef [pageSizeOptions]="[5,10]" showFirstLastButtons></mat-paginator>
-  </div>
 </div>
 <div class="row m-2" id="detalleExporter">
    <!--Detalle de compra total-->
-  <div class="col-3">
+  <div class="col-md-3 mt-2">
     <div class="card border-3">
       <h5 class="card-header text-white bg-dark">Procesos totales</h5>
       <ul class="list-group list-group-flush">
@@ -266,7 +265,7 @@
   </div>
 
   <!--Detalle de compra CP-->
-  <div class="col-3">
+  <div class="col-md-3 mt-2">
     <div class="card border-3 ">
       <h5 class="card-header text-white bg-dark ">Procesos compras públicas</h5>
       <ul class="list-group list-group-flush">
@@ -278,7 +277,7 @@
   </div>
 
   <!--Detalle de compra EEASA-->
-  <div class="col-3">
+  <div class="col-md-3 mt-2">
     <div class="card border-3">
       <h5 class="card-header text-white bg-dark">Proceso EEASA</h5>
       <ul class="list-group list-group-flush">
@@ -287,8 +286,5 @@
         </li>
       </ul>
     </div>
-  </div>
-  <div class="col-3">
-    
   </div>
 </div>

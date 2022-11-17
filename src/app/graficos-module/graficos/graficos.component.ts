@@ -278,7 +278,7 @@ export class GraficosComponent implements OnInit {
     this.chartOptionsPie = {
       series: this.datos,
       chart: {
-        width: 380,
+        width: 400,
         type: 'pie',
       },
       labels: this.categories,
@@ -287,7 +287,7 @@ export class GraficosComponent implements OnInit {
           breakpoint: 480,
           options: {
             chart: {
-              width: 200,
+              width: 380,
             },
             legend: {
               position: 'bottom',

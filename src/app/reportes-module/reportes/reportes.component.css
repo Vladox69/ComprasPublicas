@@ -12,11 +12,11 @@
 }
 
 .select-proceso {
-    width: 525px;
+    width: 100%;
 }
 
 .select-departamento {
-    width: 300px;
+    width: 100%;
 }
 
 .botones {
@@ -34,17 +34,14 @@
 }
 
 table {
-    width: 100%;
+    width: auto;
     margin-bottom: 20px;
+    overflow: auto;
 }
 
 .card-detail{
     width: 350px;
     height: 350px;
-}
-
-table {
-    width: 100%;
 }
 
 table td {
@@ -106,4 +103,8 @@ th {
 .no{
     width: 5px;
     background-color: black;
+}
+
+.container{
+    overflow: scroll;
 }

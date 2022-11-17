@@ -1,5 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-sidenav',
@@ -12,8 +14,20 @@ import { FormBuilder } from '@angular/forms';
  */
 export class SidenavComponent implements OnDestroy {
 
-
+  @ViewChild(MatSidenav)
+  sidenav!: MatSidenav;
   
+  ngAfterViewInit() {
+    this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
+      if (res.matches) {
+        this.sidenav.mode = 'over';
+        this.sidenav.close();
+      } else {
+        this.sidenav.mode = 'side';
+        this.sidenav.open();
+      }
+    });
+  }
 
   fillerNav=[
        {
@@ -56,7 +70,7 @@ export class SidenavComponent implements OnDestroy {
     top: 0,
   });
 
-   constructor(private _formBuilder: FormBuilder) {
+   constructor(private _formBuilder: FormBuilder,private observer: BreakpointObserver) {
    
     }
  

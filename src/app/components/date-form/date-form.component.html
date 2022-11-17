@@ -1,28 +1,66 @@
-<div  class="m-0 row justify-content-center">
-    <div class="p-3 m-2 bg-primary text-white text-center text-uppercase">proceso de compras</div>
-    <div class="col-auto p-5 text-center">
+<div class="p-3 my-2 bg-primary text-white text-center text-uppercase">
+  proceso de compras
+</div>
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4 mb-2">
         <mat-card class="date-card">
-            <mat-card-subtitle class="text-center mt-1">Filtro por fechas</mat-card-subtitle>
+            <mat-card-subtitle class="text-center mt-1"
+              >Filtro por fechas</mat-card-subtitle
+            >
             <form [formGroup]="dateForm">
-                <div class="d-flex justify-content-between">
-                    <mat-form-field class="form-group">
-                        <input matInput [matDatepicker]="fromDate" placeholder="Fecha inicial"
-                            formControlName="fromDate" [max]="maxDate" (dateChange)="cargarFechaFinal()" />
-                        <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+              <div class="row">
+                <div class="col-5">
+                    <mat-form-field class="form-group w-75">
+                        <input
+                          matInput
+                          [matDatepicker]="fromDate"
+                          placeholder="Fecha inicial"
+                          formControlName="fromDate"
+                          [max]="maxDate"
+                          (dateChange)="cargarFechaFinal()"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="fromDate"
+                        ></mat-datepicker-toggle>
                         <mat-datepicker touchUi #fromDate></mat-datepicker>
-                    </mat-form-field>
-                    <mat-form-field class="form-group">
-                        <input matInput [matDatepicker]="toDate" [min]="minDate" (dateChange)="calculoEntreFechas()"
-                        placeholder="Fecha final" formControlName="toDate" />
-                        <mat-datepicker-toggle matSuffix [for]="toDate" ></mat-datepicker-toggle>
-                        <mat-datepicker touchUi #toDate></mat-datepicker>
-                    </mat-form-field>
+                      </mat-form-field>
                 </div>
-                <button type="submit" [disabled]="!dateForm.valid" 
-                    mat-raised-button color="primary" (click)="onClickObtenerResultados($event)" >
-                    Obtener resultados
-                </button>
+                <div class="col-2"></div>
+                <div class="col-5 ">
+                    <mat-form-field class="form-group w-75">
+                        <input
+                          matInput
+                          [matDatepicker]="toDate"
+                          [min]="minDate"
+                          (dateChange)="calculoEntreFechas()"
+                          placeholder="Fecha final"
+                          formControlName="toDate"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="toDate"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker touchUi #toDate></mat-datepicker>
+                      </mat-form-field>
+                </div>
+              </div>
+              <div class="col text-center mt-3">
+                <button
+                type="submit"
+                [disabled]="!dateForm.valid"
+                mat-raised-button
+                color="primary"
+                (click)="onClickObtenerResultados($event)"
+                class=""
+              >
+                Obtener resultados
+              </button>
+              </div>
             </form>
-        </mat-card>
+          </mat-card>
     </div>
+    <div class="col-md-4"></div>
+  
 </div>
