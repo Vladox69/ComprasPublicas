@@ -157,8 +157,8 @@
 </div>
 
 <!--Tabla que se muestra en la vista -->
-<div class="container mat-elevation-z2 ">
-    <table class="text-center" mat-table [dataSource]="dataSource">
+<div class="container-fluid mat-elevation-z2 overflow-scroll">
+    <table class="text-center w-100 " mat-table [dataSource]="dataSource">
       <!--ÍNDICE -->
       <ng-container matColumnDef="No" >
         <th class="num-cod " mat-header-cell *matHeaderCellDef>No.</th>
