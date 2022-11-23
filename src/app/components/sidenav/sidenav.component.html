@@ -1,18 +1,19 @@
 <ng-container *ngIf="shouldRun">
-  <mat-toolbar color="primary" class="example-header">
+  <mat-toolbar  class="example-header">
     <div>
-      <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+      <button class="text-white" mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
         <mat-icon *ngIf="!sidenav.opened">
             menu
         </mat-icon>
-        <mat-icon *ngIf="sidenav.opened">
+          <mat-icon *ngIf="sidenav.opened">
             close
         </mat-icon>
     </button>
     </div>
-    <div>
-      <a href="https://app.eeasa.com.ec/intranet/#inicio">
-        <mat-icon >logout</mat-icon></a>
+    <div class="">
+      <a class="nav-link d-flex align-items-center" href="https://app.eeasa.com.ec/intranet/#inicio">
+        Salir <mat-icon class="mx-2" >logout</mat-icon>
+      </a>
     </div>
   </mat-toolbar>
   <mat-sidenav-container class="example-container">
@@ -20,7 +21,6 @@
       #sidenav
       mode="side"
       opened
-      class="example-sidenav"
       [fixedInViewport]="options.value.fixed"
       [fixedTopGap]="options.value.top"
       [fixedBottomGap]="options.value.bottom"
@@ -30,7 +30,7 @@
         <img class="eeasa-logo" src="assets/Logo-EEASA-8.png" alt="logo eeasa"
       height="80" >
       </div>
-      <mat-accordion  mat-list-item  *ngFor="let nav of fillerNav">
+      <mat-accordion   mat-list-item  *ngFor="let nav of fillerNav">
         <mat-expansion-panel >
           <mat-expansion-panel-header>
             <mat-panel-title>

@@ -23,10 +23,14 @@ export class ExcelService {
     detaila_val_total: DetalleCompra[],
     comprasPublicas: CompraPublica[],
     detail_val_EEASA:DetalleCompra[],
-    detail_val_CA:DetalleCompra[]
+    detail_val_CA:DetalleCompra[],
+    fromDate:any,
+    toDate:any,
+    proceso:any,
+    departamento:any
   ) {
     this._workbook = new Workbook();
-    await this.create_sheet(detaila_val_total, comprasPublicas,detail_val_EEASA,detail_val_CA);
+    await this.create_sheet(detaila_val_total, comprasPublicas,detail_val_EEASA,detail_val_CA,fromDate,toDate,proceso,departamento);
     this._workbook.xlsx.writeBuffer().then((data)=>{
       const blob=new Blob([data])
       fs.saveAs(blob,'Compras_publicas.xlsx');
@@ -42,7 +46,11 @@ export class ExcelService {
     detaila_val_total: DetalleCompra[],
     comprasPublicas: CompraPublica[],
     detail_val_EEASA:DetalleCompra[],
-    detail_val_CA:DetalleCompra[]
+    detail_val_CA:DetalleCompra[],
+    fromDate:any,
+    toDate:any,
+    proceso:any,
+    departamento:any
   ) {
     //Añadir hoja
     const sheet = this._workbook.addWorksheet('Compras Públicas');
@@ -100,26 +108,28 @@ export class ExcelService {
     });
 
     const position: ImagePosition = {
-      tl: { col: 0.15, row: 0.3 },
-      ext: { width: 700, height: 229 },
+      tl: { col: 0, row: 1 },
+      ext: { width: 364, height: 120 },
     };
 
     sheet.addImage(logoId, position);
 
     //Añadir encabezados
-    const headerRow = sheet.getRow(14);
+    const headerRow = sheet.getRow(8);
 
     headerRow.values = HEADERS;
     headerRow.font = { bold: true, size: 12 };
 
-    const rowsToInsert = sheet.getRows(15, comprasPublicas.length);
+    const rowsToInsert = sheet.getRows(9, comprasPublicas.length);
 
-    const valor_columna_sig = 17 + comprasPublicas.length;
+    const valor_columna_sig = 11 + comprasPublicas.length;
     sheet.getCell(`A${valor_columna_sig-1}`).value='PROCESOS DETALLE';
     sheet.getCell(`B${valor_columna_sig-1}`).value='Total';
     sheet.getCell(`C${valor_columna_sig-1}`).value='EEASA';
     sheet.getCell(`D${valor_columna_sig-1}`).value='Compras públicas';
     
+
+
     //Insertar los detalles de cada resolución y el total contratado
     for (let index = 0; index < detaila_val_total.length; index++) {
       const col = 'A';
@@ -180,5 +190,27 @@ export class ExcelService {
         };
       });
     });
+
+    //Agregar detalle del reporte
+    sheet.getCell('C2').value='REPORTE PROCESO DE COMPRAS PÚBLICAS';
+    sheet.getCell('C3').value='PROCESO';
+    sheet.getCell('C4').value='DEPARTAMENTO';
+    sheet.getCell('C5').value='DESDE';
+    sheet.getCell('C6').value='HASTA';
+
+    sheet.getCell('D3').value=proceso;
+    sheet.getCell('D4').value=departamento;
+    sheet.getCell('D5').value=fromDate;
+    sheet.getCell('D6').value=toDate;
+
+    sheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+      row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
+        cell.alignment = {
+          wrapText: true,
+          vertical: 'top',
+        };
+      });
+    });
+
   }
 }

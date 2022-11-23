@@ -1,48 +1,49 @@
 <app-date-form [ruta]='"/reportes"' ></app-date-form>
 <!--Botones y filtros -->
-<div class="row m-2">
-  <div class="col-md-3 mt-2">
-    <button  [disabled]="!(comprasPublicas.length > 0)" (click)="openDialog()" class="btn-height btn-excel mx-2"
-      mat-raised-button>
-      <mat-icon>description</mat-icon>
-      Excel
-    </button>
-    <button [disabled]="!(comprasPublicas.length > 0)" (click)="downloadPdf()" class="btn-height" mat-raised-button
-      color="warn">
-      <mat-icon>picture_as_pdf</mat-icon>
-      PDF
-    </button>
-  </div>
-  <div class="col-md-9 mt-2">
-    <div class="row">
-      <div class="col-md-6">
-        <mat-form-field class="select-proceso" appearance="fill">
-          <mat-label>Tipo de proceso</mat-label>
-          <mat-select [(ngModel)]="selectProceso" (ngModelChange)="filtrar()">
-            <mat-option>TODOS</mat-option>
-            <mat-option *ngFor="let tipoProceso of tipoProcesos" [value]="tipoProceso.abreviatura">
-              {{ tipoProceso.descripcion }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-md-6">
-        <mat-form-field class="select-departamento" appearance="fill">
-          <mat-label>Departamentos</mat-label>
-          <mat-select [(ngModel)]="selectDepartamento" (ngModelChange)="filtrar()">
-            <mat-option>TODOS</mat-option>
-            <mat-option *ngFor="let departamento of departamentos" [value]="departamento.descripcion">
-              {{ departamento.descripcion }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+  <div class="row ">
+    <div class="col-md-3 mt-2">
+      <button  [disabled]="!(comprasPublicas.length > 0)" (click)="openDialog()" class="btn-height btn-excel mx-2"
+        mat-raised-button>
+        <mat-icon>description</mat-icon>
+        Excel
+      </button>
+      <button [disabled]="!(comprasPublicas.length > 0)" (click)="downloadPdf()" class="btn-height" mat-raised-button
+        color="warn">
+        <mat-icon>picture_as_pdf</mat-icon>
+        PDF
+      </button>
     </div>
-    
+    <div class="col-md-9 mt-2">
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field class="select-proceso" appearance="fill">
+            <mat-label>Tipo de proceso</mat-label>
+            <mat-select [(ngModel)]="selectProceso" (ngModelChange)="filtrar()">
+              <mat-option>TODOS</mat-option>
+              <mat-option *ngFor="let tipoProceso of tipoProcesos" [value]="tipoProceso">
+                {{ tipoProceso.descripcion }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="select-departamento" appearance="fill">
+            <mat-label>Departamentos</mat-label>
+            <mat-select [(ngModel)]="selectDepartamento" (ngModelChange)="filtrar()">
+              <mat-option>TODOS</mat-option>
+              <mat-option *ngFor="let departamento of departamentos" [value]="departamento.descripcion">
+                {{ departamento.descripcion }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      
+    </div>
   </div>
-</div>
+
 
 <!-- Tabla a pdf, esta tabla genera el pdf con los datos, en caso de cambios, cambiar en ambas tablas -->
-<div class="container mat-elevation-z2 m-12 m-2 oculto">
+<div class="container mat-elevation-z2   oculto">
   <div class="">
     <table mat-table [dataSource]="comprasPublicas" id="tableExporter">
       <!--ÍNDICE -->
@@ -147,8 +148,16 @@
   </div>
 </div>
 
+<!--Encabezados para el reporte en pdf-->
+<div class="encabezado oculto" id="encabezado">
+  <h1 style="text-align: center;">REPORTE PROCESOS DE COMPRAS PÚBLICAS</h1>
+  <h2 style="text-align: center;"> {{descripcion}}</h2>
+  <h2 style="text-align: center;">{{selectDepartamento}}</h2>
+  <h2> Fecha desde: {{fromDate | date: 'd MMMM  y'}} hasta: {{toDate | date: 'd MMMM  y'}} </h2>
+</div>
+
 <!--Tabla que se muestra en la vista -->
-<div class="container mat-elevation-z2 m-12 m-2 ">
+<div class="container mat-elevation-z2 ">
     <table class="text-center" mat-table [dataSource]="dataSource">
       <!--ÍNDICE -->
       <ng-container matColumnDef="No" >
@@ -251,9 +260,9 @@
     </table>
     <mat-paginator #paginatorRef [pageSizeOptions]="[5,10]" showFirstLastButtons></mat-paginator>
 </div>
-<div class="row m-2" id="detalleExporter">
+<div class="row " id="detalleExporter">
    <!--Detalle de compra total-->
-  <div class="col-md-3 mt-2">
+  <div class="col-md-3 mt-2 mb-2">
     <div class="card border-3">
       <h5 class="card-header text-white bg-dark">Procesos totales</h5>
       <ul class="list-group list-group-flush">
@@ -265,7 +274,7 @@
   </div>
 
   <!--Detalle de compra CP-->
-  <div class="col-md-3 mt-2">
+  <div class="col-md-3 mt-2 mb-2">
     <div class="card border-3 ">
       <h5 class="card-header text-white bg-dark ">Procesos compras públicas</h5>
       <ul class="list-group list-group-flush">
@@ -277,7 +286,7 @@
   </div>
 
   <!--Detalle de compra EEASA-->
-  <div class="col-md-3 mt-2">
+  <div class="col-md-3 mt-2 mb-2">
     <div class="card border-3">
       <h5 class="card-header text-white bg-dark">Proceso EEASA</h5>
       <ul class="list-group list-group-flush">

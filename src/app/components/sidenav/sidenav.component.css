@@ -10,3 +10,13 @@
   ::ng-deep .mat-expansion-panel-body {
     padding: 0 0 0 20px !important;
   }
+
+  mat-toolbar{
+    background-color: #20315f !important;
+  }
+
+  .example-sidenav{
+    background-color: #EAEBEF;
+  }
+
+  

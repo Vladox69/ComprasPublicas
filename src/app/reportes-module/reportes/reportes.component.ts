@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-reportes',
@@ -45,11 +46,16 @@ export class ReportesComponent implements OnInit {
   eeasaContratado:number=0;
   cpContratado:number=0;
 
-  selectProceso: string;
+  selectProceso: TipoProceso={id:'',
+    descripcion:'',
+    abreviatura:'',
+    tipo:''};
   selectDepartamento: string;
+  descripcion:string='';
 
   fromDate: any;
   toDate: any;
+  datePipe = new DatePipe('es');
 
   displayedColumns: string[] = [
     'No',
@@ -136,23 +142,32 @@ export class ReportesComponent implements OnInit {
    * Método para realizar filtros por medio de tipo de proceso o departamentos
    */
   filtrar(): void {
-    if (this.selectProceso == undefined &&this.selectDepartamento == undefined) {
+
+    let abreviatura=undefined;
+    this.descripcion='';
+
+    if(this.selectProceso!=undefined){
+      abreviatura=this.selectProceso.abreviatura;
+      this.descripcion=this.selectProceso.descripcion;
+    }
+    
+    if (abreviatura == undefined &&this.selectDepartamento == undefined) {
       this.comprasPublicas = this.comprasPublicasFilter;
       this.dataSource.data=this.comprasPublicas;
-    } else if (this.selectProceso == undefined &&this.selectDepartamento != '') {
+    } else if (abreviatura == undefined &&this.selectDepartamento != '') {
       let departamento = this.selectDepartamento;
       this.comprasPublicas = this.comprasPublicasFilter.filter(function (proceso) {
         return proceso.intdep_DESCRIPCION == departamento;
       });
       this.dataSource.data=this.comprasPublicas;
-    } else if (this.selectProceso != '' &&this.selectDepartamento == undefined) {
-      let proceso_cod = this.selectProceso;
+    } else if (abreviatura != '' &&this.selectDepartamento == undefined) {
+      let proceso_cod = abreviatura;
       this.comprasPublicas = this.comprasPublicasFilter.filter(function (proceso) {
         return proceso.intpro_ABREV == proceso_cod;});
         this.dataSource.data=this.comprasPublicas;
-    } else if (this.selectProceso != '' && this.selectDepartamento != '') {
+    } else if (abreviatura != '' && this.selectDepartamento != '') {
       let departamento = this.selectDepartamento;
-      let proceso_cod = this.selectProceso;
+      let proceso_cod = abreviatura;
       this.comprasPublicas = this.comprasPublicasFilter.filter(function (proceso) {
         return (proceso.intdep_DESCRIPCION == departamento &&proceso.intpro_ABREV == proceso_cod);
       });
@@ -260,14 +275,22 @@ export class ReportesComponent implements OnInit {
    * Método para llamar al servicio de descargar excel
    */
   async downloadExcel() {
-    this.excelService.dowloadExcel(this.detalleComprasTotal, this.comprasPublicas,this.detalleComprasEEASA,this.detalleComprasCA);
+    let fromDate,toDate;
+    fromDate=this.datePipe.transform(this.fromDate,'d MMMM  y');
+    toDate=this.datePipe.transform(this.toDate,'d MMMM  y');
+    this.excelService.dowloadExcel(this.detalleComprasTotal,
+                                    this.comprasPublicas,
+                                    this.detalleComprasEEASA,
+                                    this.detalleComprasCA,
+                                    fromDate,toDate,
+                                    this.descripcion,this.selectDepartamento);
   }
 
   /**
    * Método para llamar al servicio de descargar pdf
    */
   downloadPdf() {
-    this.pdfService.exportToPdf('tableExporter', 'detalleExporter');
+    this.pdfService.exportToPdf('tableExporter', 'detalleExporter','encabezado');
   }
 
 

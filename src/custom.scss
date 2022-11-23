@@ -1,0 +1,10 @@
+@import '~@angular/material/theming';
+
+@font-face {
+    font-family: 'Aileron';
+    src: url('assets/fonts/aileron/Aileron-Light.otf');
+}
+
+$custom-typography:mat-typography-config($font-family: 'Aileron');
+
+@include mat-core($custom-typography);
