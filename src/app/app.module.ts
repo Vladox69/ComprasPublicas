@@ -16,24 +16,20 @@ import { NgApexchartsModule } from "ng-apexcharts";
 import { DateFormComponent } from './components/date-form/date-form.component';
 import { ReportesComponent } from './reportes-module/reportes/reportes.component';
 import { GraficosComponent } from './graficos-module/graficos/graficos.component';
-import { VacioComponent } from './components/vacio/vacio.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DialogComponent } from './reportes-module/dialog/dialog.component';
 import { DialogErrorComponent } from './components/dialog-error/dialog-error.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { GraficosCsComponent } from './calidad-servicio/graficos-cs/graficos-cs.component';
 import { GraficosGeneralesCsComponent } from './calidad-servicio/graficos-generales-cs/graficos-generales-cs.component';
 
 @NgModule({
-  entryComponents: [DialogComponent,DialogErrorComponent],
+  entryComponents: [DialogErrorComponent],
   declarations: [
     AppComponent,
     SidenavComponent,
     DateFormComponent,
     ReportesComponent,
     GraficosComponent,
-    VacioComponent,
-    DialogComponent,
     DialogErrorComponent,
     HomePageComponent,
     GraficosCsComponent,

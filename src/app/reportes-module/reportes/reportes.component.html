@@ -2,7 +2,7 @@
 <!--Botones y filtros -->
   <div class="row ">
     <div class="col-md-3 mt-2">
-      <button  [disabled]="!(comprasPublicas.length > 0)" (click)="openDialog()" class="btn-height btn-excel mx-2"
+      <button  [disabled]="!(comprasPublicas.length > 0)" (click)="downloadExcel()" class="btn-height btn-excel mx-2"
         mat-raised-button>
         <mat-icon>description</mat-icon>
         Excel
@@ -40,121 +40,6 @@
       
     </div>
   </div>
-
-
-<!-- Tabla a pdf, esta tabla genera el pdf con los datos, en caso de cambios, cambiar en ambas tablas -->
-<div class="container mat-elevation-z2   oculto">
-  <div class="">
-    <table mat-table [dataSource]="comprasPublicas" id="tableExporter">
-      <!--ÍNDICE -->
-      <ng-container matColumnDef="No">
-        <th class="num-cod" mat-header-cell *matHeaderCellDef>No.</th>
-        <td class="num-cod" mat-cell *matCellDef="let i=index">
-          {{ i+1 }}
-        </td>
-      </ng-container>
-      <!--FECHA DE PUBLICACIÓN -->
-      <ng-container matColumnDef="INTRP_FECHA_PUBLICACION">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          FECHA DE PUBLICACIÓN
-        </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.createdAt }}
-        </td>
-      </ng-container>
-      <!--PROCESO DESCRIPCION -->
-      <ng-container matColumnDef="INTPRO_DESCRIPCION">
-        <th mat-header-cell *matHeaderCellDef>TIPO DE PROCESO</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.intpro_DESCRIPCION }}
-        </td>
-      </ng-container>
-      <!--ABREVIATURA DE PROCESO -->
-      <ng-container matColumnDef="INTPRO_ABREV">
-        <th mat-header-cell *matHeaderCellDef>ABREVIATURA DE PROCESO</th>
-        <td mat-cell *matCellDef="let element">{{ element.intpro_ABREV }}</td>
-      </ng-container>
-      <!--NUMERO PROCESO -->
-      <ng-container matColumnDef="INTRP_NUMEROPROCESO">
-        <th mat-header-cell *matHeaderCellDef>NUMERO DE PROCESO</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.intrp_NUMEROPROCESO }}
-        </td>
-      </ng-container>
-      <!--CODIGO PROCESO -->
-      <ng-container matColumnDef="INTRP_CODIGOPROCESO">
-        <th mat-header-cell *matHeaderCellDef>CODIGO DE PROCESO</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.intrp_CODIGOPROCESO }}
-        </td>
-      </ng-container>
-      <!--DETALLE -->
-      <ng-container matColumnDef="INTRP_DETALLE">
-        <th mat-header-cell *matHeaderCellDef>DETALLE</th>
-        <td mat-cell *matCellDef="let element">{{ element.intrp_DETALLE }}</td>
-      </ng-container>
-      <!--ESTADO -->
-      <ng-container matColumnDef="INTRES_DETALLE">
-        <th mat-header-cell *matHeaderCellDef>ESTADO</th>
-        <td mat-cell *matCellDef="let element">{{ element.intres_DETALLE }}</td>
-      </ng-container>
-      <!--OFICIO -->
-      <ng-container matColumnDef="INTRP_NUMOFICIO">
-        <th mat-header-cell *matHeaderCellDef>OFICIO</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.intrp_NUMOFICIO }}
-        </td>
-      </ng-container>
-      <!--CONTRATISTA -->
-      <ng-container matColumnDef="MA_CONT_RAZON_SOCIAL">
-        <th mat-header-cell *matHeaderCellDef>CONTRATISTA</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.ma_CONT_RAZON_SOCIAL }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="INTDEP_DESCRIPCION">
-        <th mat-header-cell *matHeaderCellDef>DEPARTAMENTO</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.intdep_DESCRIPCION }}
-        </td>
-      </ng-container>
-      <!--AÑO -->
-      <ng-container matColumnDef="CONTRAF_NUMERO_CONTRATO">
-        <th mat-header-cell *matHeaderCellDef>AÑO</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.intrp_ANIO }}
-        </td>
-      </ng-container>
-      <!--VALOR CONTRATO -->
-      <ng-container matColumnDef="CONTRAF_VALOR_CONTRATO">
-        <th mat-header-cell *matHeaderCellDef>VALOR CONTRATADO</th>
-        <td mat-cell *matCellDef="let element">
-          <span *ngIf="element.contraf_VALOR_CONTRATO">$</span>
-          {{ element.contraf_VALOR_CONTRATO }}
-        </td>
-      </ng-container>
-      <!--APELLIDOS NOMBRES -->
-      <ng-container matColumnDef="APELLIDOS_NOMBRES">
-        <th mat-header-cell *matHeaderCellDef>RESPONSABLE</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.apellidos_NOMBRES }}
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-
-  </div>
-</div>
-
-<!--Encabezados para el reporte en pdf-->
-<div class="encabezado oculto" id="encabezado">
-  <h1 style="text-align: center;">REPORTE PROCESOS DE COMPRAS PÚBLICAS</h1>
-  <h2 style="text-align: center;"> {{descripcion}}</h2>
-  <h2 style="text-align: center;">{{selectDepartamento}}</h2>
-  <h2> Fecha desde: {{fromDate | date: 'd MMMM  y'}} hasta: {{toDate | date: 'd MMMM  y'}} </h2>
-</div>
 
 <!--Tabla que se muestra en la vista -->
 <div class="container-fluid mat-elevation-z2 overflow-scroll">

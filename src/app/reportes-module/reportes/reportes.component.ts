@@ -8,15 +8,14 @@ import { DepartamentosService } from 'src/app/services/departamentos.service';
 import { ResolucionesService } from 'src/app/services/resoluciones.service';
 import { TipoProcesosService } from 'src/app/services/tipo-procesos.service';
 import { ExcelService } from 'src/app/services/excel.service';
-import { PdfService } from 'src/app/services/pdf.service';
 import { DetalleCompra } from 'src/app/models/detalle-compra.interface';
 import { Resolucion } from 'src/app/models/resolucion.interface';
 import { Observable } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent } from '../dialog/dialog.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
+import { Img, PdfMakeWrapper,Txt,Table, ITable, Stack, Columns } from 'pdfmake-wrapper';
+import { HEADERS } from 'src/app/services/encabezados';
 
 @Component({
   selector: 'app-reportes',
@@ -81,8 +80,6 @@ export class ReportesComponent implements OnInit {
     private resolucionService: ResolucionesService,
     private activedRoute: ActivatedRoute,
     private excelService: ExcelService,
-    private pdfService: PdfService,
-    private dialog: MatDialog
   ) {
     this.fromDate = this.activedRoute.snapshot.params.fromDate;
     this.toDate = this.activedRoute.snapshot.params.toDate;
@@ -94,20 +91,6 @@ export class ReportesComponent implements OnInit {
     }
   }
 
-  /**
-   * Método para abrir un dialog de confirmacion
-   */
-  openDialog(): void {
-    let dialogRef = this.dialog.open(DialogComponent, {
-      width: '250px',
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.downloadExcel();
-      }
-    });
-  }
 
   /**
    * Método para extracción de datos de departamentos, tipo de procesos, comprar públicas por medio de servicios
@@ -289,11 +272,106 @@ export class ReportesComponent implements OnInit {
   /**
    * Método para llamar al servicio de descargar pdf
    */
-  downloadPdf() {
-    this.pdfService.exportToPdf('tableExporter', 'detalleExporter','encabezado');
+  async downloadPdf() {
+    let fromDate,toDate;
+    fromDate=this.datePipe.transform(this.fromDate,'d MMMM  y');
+    toDate=this.datePipe.transform(this.toDate,'d MMMM  y');
+    const pdf=new PdfMakeWrapper();
+    pdf.pageOrientation("landscape");
+    pdf.add(new Columns([
+    await new Img('/assets/logotipo.png').fit([50, 50]).build(),
+    new Stack([
+      new Txt('REPORTE PROCESOS DE COMPRAS PÚBLICAS').end,
+      new Txt(this.descripcion).end,
+      new Txt(this.selectDepartamento).end,
+      new Txt(`Fecha desde: ${fromDate} hasta: ${toDate}`).end
+      ]).absolutePosition(40,40).alignment('center').end,
+    ]
+    ).margin(10).width(100).columnGap(10).end)
+    pdf.add(this.crearTabla());
+    pdf.add(this.crearTablaDetalle());
+    pdf.create().open();
   }
 
+  crearTabla():ITable{
+    return new Table([
+      HEADERS,
+      ...this.extraerDatos()
+    ]).fontSize(6).layout({
+      fillColor:(rowIndex?, node?, columnIndex?)=> {
+          return rowIndex===0 ?'#CCC':'' 
+      },
+    }).end;
+  }
 
+  extraerDatos():any{
+    return this.comprasPublicas.map((compra,index)=>[
+      index+1,
+      compra.createdAt,
+      compra.intpro_DESCRIPCION,
+      compra.intpro_ABREV,
+      compra.intrp_NUMEROPROCESO,
+      compra.intrp_CODIGOPROCESO,
+      compra.intrp_DETALLE,
+      compra.intres_DETALLE,
+      compra.intrp_NUMOFICIO,
+      compra.ma_CONT_RAZON_SOCIAL,
+      compra.intdep_DESCRIPCION,
+      compra.intrp_ANIO,
+      compra.contraf_VALOR_CONTRATO,
+      compra.apellidos_NOMBRES
+    ]);
+  }
+
+  crearTablaDetalle():ITable{
+    return new Table([
+      ['',
+        'DESIERTO',
+        'ADJUDICADO',
+        'CANCELADO',
+        'BORRADOR',
+        'NO UTILIZADO',
+        'EN PROCESO',
+        'Total de procesos',
+        'Total contratado'],
+      [
+      'Procesos totales',
+      this.detalleComprasTotal[0].cantidad,
+      this.detalleComprasTotal[1].cantidad,
+      this.detalleComprasTotal[2].cantidad,
+      this.detalleComprasTotal[3].cantidad,
+      this.detalleComprasTotal[4].cantidad,
+      this.detalleComprasTotal[5].cantidad,
+      this.detalleComprasTotal[6].cantidad,
+      this.detalleComprasTotal[7].cantidad],
+      [
+        'Procesos compras públicas',
+        this.detalleComprasCA[0].cantidad,
+        this.detalleComprasCA[1].cantidad,
+        this.detalleComprasCA[2].cantidad,
+        this.detalleComprasCA[3].cantidad,
+        this.detalleComprasCA[4].cantidad,
+        this.detalleComprasCA[5].cantidad,
+        this.detalleComprasCA[6].cantidad,
+        this.detalleComprasCA[7].cantidad
+      ],
+      [
+        'Proceso EEASA',
+        this.detalleComprasEEASA[0].cantidad,
+        this.detalleComprasEEASA[1].cantidad,
+        this.detalleComprasEEASA[2].cantidad,
+        this.detalleComprasEEASA[3].cantidad,
+        this.detalleComprasEEASA[4].cantidad,
+        this.detalleComprasEEASA[5].cantidad,
+        this.detalleComprasEEASA[6].cantidad,
+        this.detalleComprasEEASA[7].cantidad
+      ]
+    ]).fontSize(8).margin(10).layout({
+      fillColor:(rowIndex?, node?, columnIndex?)=> {
+          return rowIndex===0 ?'#CCC':'' 
+      },
+    }).end;
+  }
 
 }
 

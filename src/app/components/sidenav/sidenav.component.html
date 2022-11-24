@@ -1,12 +1,9 @@
 <ng-container *ngIf="shouldRun">
   <mat-toolbar  class="example-header">
     <div>
-      <button class="text-white" mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
-        <mat-icon *ngIf="!sidenav.opened">
+      <button class="text-white" mat-icon-button *ngIf="sidenav.mode == 'over'" (click)="sidenav.toggle()">
+        <mat-icon >
             menu
-        </mat-icon>
-          <mat-icon *ngIf="sidenav.opened">
-            close
         </mat-icon>
     </button>
     </div>
@@ -27,7 +24,7 @@
     >
     <mat-nav-list>
       <div class="text-center">
-        <img class="eeasa-logo" src="assets/Logo-EEASA-8.png" alt="logo eeasa"
+        <img class="eeasa-logo mb-2" src="assets/logotipo.png" alt="logo eeasa"
       height="80" >
       </div>
       <mat-accordion   mat-list-item  *ngFor="let nav of fillerNav">
